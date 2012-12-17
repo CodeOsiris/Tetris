@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cmath>
 #include <cstdio>
+#include <vector>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -17,6 +18,8 @@
 #ifdef MACRO
 #include <GL/glut.h>
 #endif
+
+using namespace std;
 
 //Basic Settings
 const float BLOCK_SIZE = 0.2f;
@@ -34,8 +37,11 @@ struct Point
 class Block
 {
 public:
-    Block(){}
-    Point points[BLOCK_NUM];
+    Block()
+    {
+        points = vector<Point>(BLOCK_NUM);
+    }
+    vector<Point> points;
     void down();
 };
 

@@ -13,7 +13,6 @@
 #include "Headers/cal_point.h"
 #define DELAY 12000
 #endif
-using namespace std;
 
 //Test
 S_Block testS;
@@ -23,6 +22,12 @@ J_Block testJ;
 I_Block testI;
 O_Block testO;
 T_Block testT;
+
+//View settings
+const int WINDOW_WIDTH = 1500;
+const int WINDOW_HEIGHT = 3000;
+const int LEFT_BORDER = 100;
+const int RIGHT_BORDER = 2400;
 
 void init()
 {
@@ -37,7 +42,7 @@ void init()
 void drawBlock(Block block){
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(59.5,1,1,1000);
+    gluPerspective(59.5,(GLdouble)WINDOW_WIDTH / (GLdouble)WINDOW_HEIGHT,1,1000);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(0,0,4,0,0,0,0,1,0);
@@ -56,6 +61,10 @@ void drawBlock(Block block){
         glEnd();
     }
 	return;
+}
+
+void drawContainer()
+{
 }
 
 void drawTetris()
@@ -92,7 +101,7 @@ int main(int argc,char *argv[])
 {
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(600,600);
+    glutInitWindowSize(WINDOW_WIDTH * BLOCK_SIZE,WINDOW_HEIGHT * BLOCK_SIZE);
     glutInitWindowPosition(100,100);
     glutCreateWindow("Tetris");
     init();
