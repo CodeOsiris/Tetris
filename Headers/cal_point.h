@@ -6,7 +6,8 @@
 #include <cstdio>
 
 #ifdef _WIN32
-#include <glut.h>
+#include <windows.h>
+#include <GL\glut.h>
 #endif
 
 #ifdef __linux
@@ -122,4 +123,4 @@ public:
     }
 };
 
-#endif 
+#endif
