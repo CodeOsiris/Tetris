@@ -1,15 +1,18 @@
 #ifdef _WIN32
+#include "Headers\settings.h"
 #include "Headers\cal_point.h"
 #define GLUT_DISABLE_ATEXIT_HACK
 #define DELAY 12
 #endif
 
 #ifdef __linux
+#include "Headers/settings.h"
 #include "Headers/cal_point.h"
 #define DELAY 1
 #endif
 
 #ifdef MACRO
+#include "Headers/settings.h"
 #include "Headers/cal_point.h"
 #define DELAY 12
 #endif
@@ -58,16 +61,16 @@ void drawContainer()
     glColor3f(1.0f,1.0f,1.0f);
 
     glBegin(GL_LINES);
-        glVertex3f(LEFT_BORDER,UP_BORDER,0.0f);
-        glVertex3f(LEFT_BORDER,DOWN_BORDER,0.0f);
+        glVertex3f(LEFT_BORDER,TOP_BORDER,0.0f);
+        glVertex3f(LEFT_BORDER,BOTTOM_BORDER,0.0f);
     glEnd();
     glBegin(GL_LINES);
-        glVertex3f(RIGHT_BORDER,UP_BORDER,0.0f);
-        glVertex3f(RIGHT_BORDER,DOWN_BORDER,0.0f);
+        glVertex3f(RIGHT_BORDER,TOP_BORDER,0.0f);
+        glVertex3f(RIGHT_BORDER,BOTTOM_BORDER,0.0f);
     glEnd();
     glBegin(GL_LINES);
-        glVertex3f(LEFT_BORDER,DOWN_BORDER,0.0f);
-        glVertex3f(RIGHT_BORDER,DOWN_BORDER,0.0f);
+        glVertex3f(LEFT_BORDER,BOTTOM_BORDER,0.0f);
+        glVertex3f(RIGHT_BORDER,BOTTOM_BORDER,0.0f);
     glEnd();
 }
 
@@ -87,7 +90,8 @@ void refreshTetris(int c)
 {
     if (last_time >= 50)
     {
-        testT.down();
+        if (!testT.isBottom())
+            testT.down();
         last_time = 0;
     }
     else last_time++;
@@ -102,13 +106,16 @@ void keyboardSpecial(int key,int x,int y)
     switch (key)
     {
         case GLUT_KEY_LEFT:
-            testT.left();
+            if (!testT.isLeft() && !testT.isBottom())
+                testT.left();
             break;
         case GLUT_KEY_RIGHT:
-            testT.right();
+            if (!testT.isRight() && !testT.isBottom())
+                testT.right();
             break;
         case GLUT_KEY_DOWN:
-            testT.drop();
+            if (!testT.isBottom())
+                testT.drop();
             break;
     }
 }
