@@ -1,18 +1,15 @@
 #ifdef _WIN32
-#include "Headers\settings.h"
 #include "Headers\cal_point.h"
 #define GLUT_DISABLE_ATEXIT_HACK
 #define DELAY 12
 #endif
 
 #ifdef __linux
-#include "Headers/settings.h"
 #include "Headers/cal_point.h"
 #define DELAY 1
 #endif
 
 #ifdef MACRO
-#include "Headers/settings.h"
 #include "Headers/cal_point.h"
 #define DELAY 12
 #endif
@@ -43,7 +40,7 @@ void drawBlock(Block block){
     for (int i = 0;i < BLOCK_NUM;i++)
     {
         Point p = block.points[i];
-        double x = p.x, y = p.y, z = p.z;
+        double x = p.x * BLOCK_SIZE, y = p.y * BLOCK_SIZE, z = p.z * BLOCK_SIZE;
         glColor3f(1.0f,1.0f,1.0f);
 
         glBegin(GL_QUADS);
