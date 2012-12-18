@@ -1,17 +1,17 @@
 #ifdef _WIN32
 #include "Headers\cal_point.h"
 #define GLUT_DISABLE_ATEXIT_HACK
-#define DELAY 12000
+#define DELAY 12
 #endif
 
 #ifdef __linux
 #include "Headers/cal_point.h"
-#define DELAY 1000
+#define DELAY 1
 #endif
 
 #ifdef MACRO
 #include "Headers/cal_point.h"
-#define DELAY 12000
+#define DELAY 12
 #endif
 
 //Test
@@ -23,11 +23,8 @@ I_Block testI;
 O_Block testO;
 T_Block testT;
 
-//View settings
-const int WINDOW_WIDTH = 1500;
-const int WINDOW_HEIGHT = 3000;
-const int LEFT_BORDER = 100;
-const int RIGHT_BORDER = 2400;
+//View Parameters
+int last_time;
 
 void init()
 {
@@ -40,13 +37,6 @@ void init()
 }
 
 void drawBlock(Block block){
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(59.5,(GLdouble)WINDOW_WIDTH / (GLdouble)WINDOW_HEIGHT,1,1000);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(0,0,4,0,0,0,0,1,0);
-
     for (int i = 0;i < BLOCK_NUM;i++)
     {
         Point p = block.points[i];
@@ -65,6 +55,20 @@ void drawBlock(Block block){
 
 void drawContainer()
 {
+    glColor3f(1.0f,1.0f,1.0f);
+
+    glBegin(GL_LINES);
+        glVertex3f(LEFT_BORDER,UP_BORDER,0.0f);
+        glVertex3f(LEFT_BORDER,DOWN_BORDER,0.0f);
+    glEnd();
+    glBegin(GL_LINES);
+        glVertex3f(RIGHT_BORDER,UP_BORDER,0.0f);
+        glVertex3f(RIGHT_BORDER,DOWN_BORDER,0.0f);
+    glEnd();
+    glBegin(GL_LINES);
+        glVertex3f(LEFT_BORDER,DOWN_BORDER,0.0f);
+        glVertex3f(RIGHT_BORDER,DOWN_BORDER,0.0f);
+    glEnd();
 }
 
 void drawTetris()
@@ -72,6 +76,7 @@ void drawTetris()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
+    drawContainer();
 	drawBlock(testT);
 
     glFlush();
@@ -80,15 +85,37 @@ void drawTetris()
 
 void refreshTetris(int c)
 {
-    testT.down();
+    if (last_time >= 50)
+    {
+        testT.down();
+        last_time = 0;
+    }
+    else last_time++;
 
     glutPostRedisplay();
     glutTimerFunc(DELAY,refreshTetris,0);
 }
 
+void keyboardSpecial(int key,int x,int y)
+{
+    glutSetKeyRepeat(0);
+    switch (key)
+    {
+        case GLUT_KEY_LEFT:
+            testT.left();
+            break;
+        case GLUT_KEY_RIGHT:
+            testT.right();
+            break;
+        case GLUT_KEY_DOWN:
+            testT.drop();
+            break;
+    }
+}
+
 void keyboardControl(unsigned char key,int x,int y)
 {
-    switch(key)
+    switch (key)
     {
 		case 27:
 			exit(0);
@@ -101,11 +128,12 @@ int main(int argc,char *argv[])
 {
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    glutInitWindowSize(WINDOW_WIDTH * BLOCK_SIZE,WINDOW_HEIGHT * BLOCK_SIZE);
+    glutInitWindowSize(600,600);
     glutInitWindowPosition(100,100);
     glutCreateWindow("Tetris");
     init();
     glutDisplayFunc(drawTetris);
+    glutSpecialFunc(keyboardSpecial);
     glutKeyboardFunc(keyboardControl);
     refreshTetris(0);
     glutMainLoop();

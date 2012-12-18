@@ -10,7 +10,29 @@
 #include "../Headers/cal_point.h"
 #endif
 
-void Block::down(){
+void Block::down()
+{
+    for (int i = 0;i < BLOCK_NUM;i++)
+        (this->points[i]).y -= BLOCK_SIZE;
+    return;
+}
+
+void Block::left()
+{
+    for (int i = 0;i < BLOCK_NUM;i++)
+        (this->points[i]).x -= BLOCK_SIZE;
+    return;
+}
+
+void Block::right()
+{
+    for (int i = 0;i < BLOCK_NUM;i++)
+        (this->points[i]).x += BLOCK_SIZE;
+    return;
+}
+
+void Block::drop()
+{
     for (int i = 0;i < BLOCK_NUM;i++)
         (this->points[i]).y -= BLOCK_SIZE;
     return;

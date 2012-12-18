@@ -22,8 +22,12 @@
 using namespace std;
 
 //Basic Settings
-const float BLOCK_SIZE = 0.2f;
+const float BLOCK_SIZE = 0.05f;
 const int BLOCK_NUM = 4;
+const float LEFT_BORDER = -1.0f + BLOCK_SIZE / 2;
+const float RIGHT_BORDER = 0.5f - BLOCK_SIZE / 2;
+const float UP_BORDER = 1.0f - BLOCK_SIZE / 2;
+const float DOWN_BORDER = -1.0f + BLOCK_SIZE / 2;
 
 struct Point
 {
@@ -43,6 +47,10 @@ public:
     }
     vector<Point> points;
     void down();
+    void left();
+    void right();
+    void drop();
+    //virtual void rotate() = 0;
 };
 
 class S_Block: public Block
