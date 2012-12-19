@@ -14,7 +14,7 @@ void Block::down()
 {
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
-        (*p++).y--;
+        (*p++).row--;
     return;
 }
 
@@ -22,7 +22,7 @@ void Block::left()
 {
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
-        (*p++).x--;
+        (*p++).column--;
     return;
 }
 
@@ -30,42 +30,54 @@ void Block::right()
 {
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
-        (*p++).x++;
+        (*p++).column++;
     return;
 }
 
 void Block::drop()
 {
-    double low = 1.0;
-    list<Point>::iterator p = (this->points).begin();
-    while (p != (this->points).end())
-    {
-        if ((*p).y < low)
-            low = (*p).y;
-        p++;
-    }
-    double d = low - (int)((BOTTOM_BORDER + BLOCK_SIZE / 2) / BLOCK_SIZE);
-    p = (this->points).begin();
-    while (p != (this->points).end())
-        (*p).y -= d;
+    while (!(this->isBottom()))
+        this->down();
     return;
 }
 
-bool Block::isTop()
+void Block::occupy()
 {
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
-        if ((*p++).y >= (int)(TOP_BORDER / BLOCK_SIZE))
-            return true;
-    return false;
+    {
+        block_map[(*p).row][(*p).column] = 1;
+        p++;
+    }
+}
+
+void Block::clear()
+{
+    list<Point>::iterator p = (this->points).begin();
+    while (p != (this->points).end())
+    {
+        block_map[(*p).row][(*p).column] = 0;
+        p++;
+    }
 }
 
 bool Block::isBottom()
 {
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
-        if ((*p++).y <= (int)(BOTTOM_BORDER / BLOCK_SIZE))
+        if (block_map[(*p).row - 1][(*p).column] == 1)
             return true;
+        else p++;
+    return false;
+}
+
+bool Block::isTop()
+{
+    list<Point>::iterator p = (this->points).begin();
+    while (p != (this->points).end())
+        if (block_map[(*p).row + 1][(*p).column] == 1)
+            return true;
+        else p++;
     return false;
 }
 
@@ -73,8 +85,9 @@ bool Block::isLeft()
 {
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
-        if ((*p++).x <= (int)(LEFT_BORDER / BLOCK_SIZE))
+        if (block_map[(*p).row][(*p).column - 1] == 1)
             return true;
+        else p++;
     return false;
 }
 
@@ -82,8 +95,9 @@ bool Block::isRight()
 {
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
-        if ((*p++).x >= (int)(RIGHT_BORDER / BLOCK_SIZE))
+        if (block_map[(*p).row][(*p).column + 1] == 1)
             return true;
+        else p++;
     return false;
 }
 
@@ -93,16 +107,14 @@ void Block::rotate()
     p++;
     while (p != (this->points).end())
     {
-        if ((*p).x - (*base).x == 0)
-        {
-            (*p).x = (*base).x + ((*p).y - (*base).y);
-            (*p).y = (*base).y;
-        }
-        else
-        {
-            (*p).y = (*base).y - ((*p).x - (*base).x);
-            (*p).x = (*base).x;
-        }
+        (*p).column = (*base).column + ((*p).row - (*base).row);
+        (*p).row = (*base).row - ((*p).column - (*base).column);
         p++;
     }
+    while (this->isLeft())
+        this->right();
+    while (this->isRight())
+        this->left();
+    while (this->isTop())
+        this->down();
 }

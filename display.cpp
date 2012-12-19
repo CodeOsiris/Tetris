@@ -15,7 +15,7 @@
 #endif
 
 //Components
-L_Block current_block;
+L_Block current_block(START_ROW,START_COLUMN);
 
 //View Parameters
 int last_time;
@@ -27,14 +27,25 @@ void init()
 	glClearDepth(1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
+    for (int i = 0;i < ROW;i++)
+    {
+        block_map[i][0] = 1;
+        block_map[i][COLUMN - 1] = 1;
+    }
+    for (int i = 0;i < COLUMN;i++)
+    {
+        block_map[0][i] = 1;
+        block_map[ROW - 1][i] = 1;
+    }
+    printf("%d\n",block_map[5][0]);
 }
 
 void drawBlock(Block block){
     list<Point>::iterator p;
     for (p = block.points.begin();p != block.points.end();p++)
     {
-        double x = (*p).x * BLOCK_SIZE, y = (*p).y * BLOCK_SIZE, z = (*p).z * BLOCK_SIZE;
+        double x = (*p).column * BLOCK_SIZE, y = (*p).row * BLOCK_SIZE, z = (*p).depth * BLOCK_SIZE;
         glColor3f(1.0f,1.0f,1.0f);
 
         glBegin(GL_QUADS);
@@ -43,6 +54,8 @@ void drawBlock(Block block){
             glVertex3f(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, z + 0.0f);
             glVertex3f(x + BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, z + 0.0f);
         glEnd();
+//        if (p == block.points.begin())
+//            printf("%d %d %d\n",(*p).row,(*p).column,(block_map[(*p).row][(*p).column] == 1));
     }
 	return;
 }
@@ -72,7 +85,7 @@ void drawTetris()
 
     drawContainer();
     glPushMatrix();
-        glTranslatef(START_X * BLOCK_SIZE,START_Y * BLOCK_SIZE,0.0f);
+        glTranslatef(BLOCK_SIZE - 1.0f,BLOCK_SIZE - 1.0f,0.0f);
         drawBlock(current_block);
     glPopMatrix();
 
@@ -110,10 +123,6 @@ void keyboardSpecial(int key,int x,int y)
         case GLUT_KEY_UP:
             if (!current_block.isBottom())
                 current_block.rotate();
-            while (current_block.isLeft())
-                current_block.right();
-            while (current_block.isRight())
-                current_block.left();
             break;
         case GLUT_KEY_DOWN:
             if (!current_block.isBottom())
