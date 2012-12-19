@@ -24,9 +24,9 @@ using namespace std;
 //Basic Settings
 const float BLOCK_SIZE = 0.05f;
 const int BLOCK_NUM = 4;
-const float BOTTOM_BORDER = -1.0f + BLOCK_SIZE / 2;
+const float BOTTOM_BORDER = -1.0f + BLOCK_SIZE * 3 / 2;
 const float TOP_BORDER = 1.0f - BLOCK_SIZE / 2;
-const float LEFT_BORDER = -1.0f + BLOCK_SIZE / 2;
+const float LEFT_BORDER = -1.0f + BLOCK_SIZE * 3 / 2;
 const float RIGHT_BORDER = 0.5f - BLOCK_SIZE / 2;
 const int START_ROW = (int)((TOP_BORDER - BOTTOM_BORDER) / BLOCK_SIZE - 1);
 const int START_COLUMN = (int)((RIGHT_BORDER - LEFT_BORDER) / BLOCK_SIZE / 2);
@@ -34,5 +34,5 @@ const int ROW = (int)((TOP_BORDER - BOTTOM_BORDER) / BLOCK_SIZE);
 const int COLUMN = (int)((RIGHT_BORDER - LEFT_BORDER) / BLOCK_SIZE);
 
 //Basic Parameters
-static int block_map[ROW][COLUMN] = {0};
+extern int block_map[ROW][COLUMN];
 #endif

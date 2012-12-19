@@ -16,6 +16,7 @@
 
 //Components
 L_Block current_block(START_ROW,START_COLUMN);
+int block_map[ROW][COLUMN];
 
 //View Parameters
 int last_time;
@@ -29,16 +30,12 @@ void init()
 	glDepthFunc(GL_LEQUAL);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
     for (int i = 0;i < ROW;i++)
-    {
-        block_map[i][0] = 1;
-        block_map[i][COLUMN - 1] = 1;
-    }
-    for (int i = 0;i < COLUMN;i++)
-    {
-        block_map[0][i] = 1;
-        block_map[ROW - 1][i] = 1;
-    }
-    printf("%d\n",block_map[5][0]);
+        for (int j = 0;j < COLUMN;j++)
+        {
+            if (i == 0 || i == ROW || j == 0 || j == COLUMN)
+                block_map[i][j] = 1;
+            else block_map[i][j] = 0;
+        }
 }
 
 void drawBlock(Block block){
@@ -54,8 +51,6 @@ void drawBlock(Block block){
             glVertex3f(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, z + 0.0f);
             glVertex3f(x + BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, z + 0.0f);
         glEnd();
-//        if (p == block.points.begin())
-//            printf("%d %d %d\n",(*p).row,(*p).column,(block_map[(*p).row][(*p).column] == 1));
     }
 	return;
 }

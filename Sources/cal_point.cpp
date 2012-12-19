@@ -104,11 +104,13 @@ bool Block::isRight()
 void Block::rotate()
 {
     list<Point>::iterator base = (this->points).begin(),p = (this->points).begin();
-    p++;
+    int tmpr,tmpc;
     while (p != (this->points).end())
     {
-        (*p).column = (*base).column + ((*p).row - (*base).row);
-        (*p).row = (*base).row - ((*p).column - (*base).column);
+        tmpr = (*base).row - ((*p).column - (*base).column);
+        tmpc = (*base).column + ((*p).row - (*base).row);
+        (*p).row = tmpr;
+        (*p).column = tmpc;
         p++;
     }
     while (this->isLeft())
