@@ -22,12 +22,14 @@ public:
     Block(int br = 0,int bc = 0,int bd = 0) : base_row(br),base_column(bc),base_depth(bd)
     {
         points = list<Point>(BLOCK_NUM);
+        isStop = false;
     }
 
     list<Point> points;
     int base_row;
     int base_column;
     int base_depth;
+    bool isStop;
 
     void down();
     void left();

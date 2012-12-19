@@ -31,6 +31,7 @@ void Block::right()
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
         (*p++).column++;
+    p = (this->points).begin();
     return;
 }
 
@@ -66,7 +67,11 @@ bool Block::isBottom()
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
         if (block_map[(*p).row - 1][(*p).column] == 1)
+        {
+            this->isStop = true;
+            this->occupy();
             return true;
+        }
         else p++;
     return false;
 }
