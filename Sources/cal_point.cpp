@@ -1,100 +1,108 @@
 #ifdef _WIN32
-#include "..\Headers\cal_point.h"
+#include "..\Headers\components.h"
 #endif
 
 #ifdef __linux
-#include "../Headers/cal_point.h"
+#include "../Headers/components.h"
 #endif
 
 #ifdef MACRO
-#include "../Headers/cal_point.h"
+#include "../Headers/components.h"
 #endif
 
 void Block::down()
 {
-    for (int i = 0;i < (this->points).size();i++)
-        (this->points[i]).y--;
+    list<Point>::iterator p = (this->points).begin();
+    while (p != (this->points).end())
+        (*p++).y--;
     return;
 }
 
 void Block::left()
 {
-    for (int i = 0;i < (this->points).size();i++)
-        (this->points[i]).x--;
+    list<Point>::iterator p = (this->points).begin();
+    while (p != (this->points).end())
+        (*p++).x--;
     return;
 }
 
 void Block::right()
 {
-    for (int i = 0;i < (this->points).size();i++)
-        (this->points[i]).x++;
+    list<Point>::iterator p = (this->points).begin();
+    while (p != (this->points).end())
+        (*p++).x++;
     return;
 }
 
 void Block::drop()
 {
-    double y = (this->points[0]).y - (int)((BOTTOM_BORDER + BLOCK_SIZE / 2) / BLOCK_SIZE);
-    for (int i = 0;i < (this->points).size();i++)
-        (this->points[i]).y -= y;
+    double low = 1.0;
+    list<Point>::iterator p = (this->points).begin();
+    while (p != (this->points).end())
+    {
+        if ((*p).y < low)
+            low = (*p).y;
+        p++;
+    }
+    double d = low - (int)((BOTTOM_BORDER + BLOCK_SIZE / 2) / BLOCK_SIZE);
+    p = (this->points).begin();
+    while (p != (this->points).end())
+        (*p).y -= d;
     return;
 }
 
 bool Block::isTop()
 {
-    for (int i = 0;i < (this->points).size();i++)
-        if ((this->points[i]).y >= (int)(TOP_BORDER / BLOCK_SIZE))
+    list<Point>::iterator p = (this->points).begin();
+    while (p != (this->points).end())
+        if ((*p++).y >= (int)(TOP_BORDER / BLOCK_SIZE))
             return true;
     return false;
 }
 
 bool Block::isBottom()
 {
-    for (int i = 0;i < (this->points).size();i++)
-        if ((this->points[i]).y <= (int)(BOTTOM_BORDER / BLOCK_SIZE))
+    list<Point>::iterator p = (this->points).begin();
+    while (p != (this->points).end())
+        if ((*p++).y <= (int)(BOTTOM_BORDER / BLOCK_SIZE))
             return true;
     return false;
 }
 
 bool Block::isLeft()
 {
-    for (int i = 0;i < (this->points).size();i++)
-        if ((this->points[i]).x <= (int)(LEFT_BORDER / BLOCK_SIZE))
+    list<Point>::iterator p = (this->points).begin();
+    while (p != (this->points).end())
+        if ((*p++).x <= (int)(LEFT_BORDER / BLOCK_SIZE))
             return true;
     return false;
 }
 
 bool Block::isRight()
 {
-    for (int i = 0;i < (this->points).size();i++)
-        if ((this->points[i]).x >= (int)(RIGHT_BORDER / BLOCK_SIZE))
+    list<Point>::iterator p = (this->points).begin();
+    while (p != (this->points).end())
+        if ((*p++).x >= (int)(RIGHT_BORDER / BLOCK_SIZE))
             return true;
     return false;
 }
 
-void S_Block::rotate()
+void Block::rotate()
 {
-}
-
-void Z_Block::rotate()
-{
-}
-
-void L_Block::rotate()
-{
-}
-
-void J_Block::rotate()
-{
-}
-
-void I_Block::rotate()
-{
-}
-
-void O_Block::rotate()
-{
-}
-
-void T_Block::rotate()
-{
+    list<Point>::iterator base = (this->points).begin(),p = (this->points).begin();
+    p++;
+    while (p != (this->points).end())
+    {
+        if ((*p).x - (*base).x == 0)
+        {
+            (*p).x = (*base).x + ((*p).y - (*base).y);
+            (*p).y = (*base).y;
+        }
+        else
+        {
+            (*p).y = (*base).y - ((*p).x - (*base).x);
+            (*p).x = (*base).x;
+        }
+        p++;
+    }
 }

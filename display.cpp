@@ -1,27 +1,21 @@
 #ifdef _WIN32
-#include "Headers\cal_point.h"
+#include "Headers\components.h"
 #define GLUT_DISABLE_ATEXIT_HACK
 #define DELAY 12
 #endif
 
 #ifdef __linux
-#include "Headers/cal_point.h"
+#include "Headers/components.h"
 #define DELAY 1
 #endif
 
 #ifdef MACRO
-#include "Headers/cal_point.h"
+#include "Headers/components.h"
 #define DELAY 12
 #endif
 
-//Test
-S_Block testS;
-Z_Block testZ;
-L_Block testL;
-J_Block testJ;
-I_Block testI;
-O_Block testO;
-T_Block testT;
+//Components
+L_Block current_block;
 
 //View Parameters
 int last_time;
@@ -37,10 +31,10 @@ void init()
 }
 
 void drawBlock(Block block){
-    for (int i = 0;i < BLOCK_NUM;i++)
+    list<Point>::iterator p;
+    for (p = block.points.begin();p != block.points.end();p++)
     {
-        Point p = block.points[i];
-        double x = p.x * BLOCK_SIZE, y = p.y * BLOCK_SIZE, z = p.z * BLOCK_SIZE;
+        double x = (*p).x * BLOCK_SIZE, y = (*p).y * BLOCK_SIZE, z = (*p).z * BLOCK_SIZE;
         glColor3f(1.0f,1.0f,1.0f);
 
         glBegin(GL_QUADS);
@@ -77,7 +71,10 @@ void drawTetris()
 	glLoadIdentity();
 
     drawContainer();
-	drawBlock(testT);
+    glPushMatrix();
+        glTranslatef(START_X * BLOCK_SIZE,START_Y * BLOCK_SIZE,0.0f);
+        drawBlock(current_block);
+    glPopMatrix();
 
     glFlush();
     glutSwapBuffers();
@@ -87,8 +84,8 @@ void refreshTetris(int c)
 {
     if (last_time >= 50)
     {
-        if (!testT.isBottom())
-            testT.down();
+        if (!current_block.isBottom())
+            current_block.down();
         last_time = 0;
     }
     else last_time++;
@@ -103,16 +100,24 @@ void keyboardSpecial(int key,int x,int y)
     switch (key)
     {
         case GLUT_KEY_LEFT:
-            if (!testT.isLeft() && !testT.isBottom())
-                testT.left();
+            if (!current_block.isLeft() && !current_block.isBottom())
+                current_block.left();
             break;
         case GLUT_KEY_RIGHT:
-            if (!testT.isRight() && !testT.isBottom())
-                testT.right();
+            if (!current_block.isRight() && !current_block.isBottom())
+                current_block.right();
+            break;
+        case GLUT_KEY_UP:
+            if (!current_block.isBottom())
+                current_block.rotate();
+            while (current_block.isLeft())
+                current_block.right();
+            while (current_block.isRight())
+                current_block.left();
             break;
         case GLUT_KEY_DOWN:
-            if (!testT.isBottom())
-                testT.drop();
+            if (!current_block.isBottom())
+                current_block.drop();
             break;
     }
 }
