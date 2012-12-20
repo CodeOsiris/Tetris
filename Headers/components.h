@@ -30,6 +30,7 @@ public:
     int base_column;
     int base_depth;
     bool isStop;
+    float color[3];
 
     void down();
     void left();
@@ -54,6 +55,9 @@ public:
         *p++ = Point(base_row,base_column + 1);
         *p++ = Point(base_row - 1,base_column);
         *p++ = Point(base_row - 1,base_column - 1);
+        color[0] = 0.0f;
+        color[1] = 0.0f;
+        color[2] = 1.0f;
     }
 };
 
@@ -67,6 +71,9 @@ public:
         *p++ = Point(base_row,base_column - 1);
         *p++ = Point(base_row - 1,base_column);
         *p++ = Point(base_row - 1,base_column + 1);
+        color[0] = 1.0f;
+        color[1] = 0.0f;
+        color[2] = 1.0f;
     }
 };
 
@@ -80,6 +87,9 @@ public:
         *p++ = Point(base_row,base_column - 1);
         *p++ = Point(base_row - 1,base_column);
         *p++ = Point(base_row - 2,base_column);
+        color[0] = 1.0f;
+        color[1] = 0.5f;
+        color[2] = 0.0f;
     }
 };
 
@@ -93,6 +103,9 @@ public:
         *p++ = Point(base_row,base_column + 1);
         *p++ = Point(base_row - 1,base_column);
         *p++ = Point(base_row - 2,base_column);
+        color[0] = 1.0f;
+        color[1] = 1.0f;
+        color[2] = 0.0f;
     }
 };
 
@@ -106,6 +119,9 @@ public:
         *p++ = Point(base_row,base_column + 1);
         *p++ = Point(base_row,base_column + 2);
         *p++ = Point(base_row,base_column - 1);
+        color[0] = 1.0f;
+        color[1] = 0.0f;
+        color[2] = 0.0f;
     }
 };
 
@@ -119,6 +135,9 @@ public:
         *p++ = Point(base_row - 1,base_column);
         *p++ = Point(base_row,base_column - 1);
         *p++ = Point(base_row - 1,base_column - 1);
+        color[0] = 0.0f;
+        color[1] = 1.0f;
+        color[2] = 1.0f;
     }
 };
 
@@ -132,7 +151,11 @@ public:
         *p++ = Point(base_row,base_column - 1);
         *p++ = Point(base_row,base_column + 1);
         *p++ = Point(base_row - 1,base_column);
+        color[0] = 0.0f;
+        color[1] = 1.0f;
+        color[2] = 0.0f;
     }
 };
 
+extern vector<Block> block_list;
 #endif

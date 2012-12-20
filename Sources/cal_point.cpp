@@ -10,6 +10,30 @@
 #include "../Headers/components.h"
 #endif
 
+void erase_row(int row)
+{
+    list<Point>::iterator p;
+    for (int i = 0;i < block_list.size();i++)
+    {
+        p = block_list[i].points.begin();
+        block_list[i].clear();
+        while (p != block_list[i].points.end())
+        {
+            if ((*p).row == row)
+            {
+                p = block_list[i].points.erase(p);
+                row_fill[row]--;
+            }
+            else if ((*p).row > row)
+            {
+                (*p).row--;
+            }
+            p++;
+        }
+        block_list[i].occupy();
+    }
+}
+
 void Block::down()
 {
     list<Point>::iterator p = (this->points).begin();
@@ -37,8 +61,18 @@ void Block::right()
 
 void Block::drop()
 {
+    clock_t previous,current;
+    previous = clock();
+    this->down();
     while (!(this->isBottom()))
-        this->down();
+    {
+        if (current - previous >= dropspeed)
+        {
+            this->down();
+            previous = clock();
+        }
+        current = clock();
+    }
     return;
 }
 
@@ -48,6 +82,8 @@ void Block::occupy()
     while (p != (this->points).end())
     {
         block_map[(*p).row][(*p).column] = 1;
+        if (++row_fill[(*p).row] >= COLUMN)
+            erase_row((*p).row);
         p++;
     }
 }
@@ -65,11 +101,11 @@ void Block::clear()
 bool Block::isBottom()
 {
     list<Point>::iterator p = (this->points).begin();
+    bool flag = false;
     while (p != (this->points).end())
         if (block_map[(*p).row - 1][(*p).column] == 1)
         {
             this->isStop = true;
-            this->occupy();
             return true;
         }
         else p++;

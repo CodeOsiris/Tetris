@@ -17,6 +17,7 @@
 //Components
 Block current_block,next_block;
 int block_map[ROW + 2][COLUMN + 2];
+int row_fill[ROW + 2];
 
 //View Parameters
 clock_t previous,current;
@@ -69,6 +70,7 @@ void init()
                 block_map[i][j] = 1;
             else block_map[i][j] = 0;
         }
+        row_fill[i] = 0;
     }
     previous = clock();
     srand(time(0));
@@ -82,7 +84,7 @@ void drawBlock(Block block){
     for (p = block.points.begin();p != block.points.end();p++)
     {
         double x = (*p).column * BLOCK_SIZE, y = (*p).row * BLOCK_SIZE, z = (*p).depth * BLOCK_SIZE;
-        glColor3f(1.0f,1.0f,1.0f);
+        glColor3f(block.color[0],block.color[1],block.color[2]);
         glBegin(GL_QUADS);
             glVertex3f(x + BLOCK_SIZE / 2, y + BLOCK_SIZE / 2, z + 0.0f);
             glVertex3f(x - BLOCK_SIZE / 2, y + BLOCK_SIZE / 2, z + 0.0f);
@@ -92,10 +94,10 @@ void drawBlock(Block block){
 
         glColor3f(0.4f,0.4f,0.4f);
         glBegin(GL_LINE_LOOP);
-            glVertex3f(x + BLOCK_SIZE / 2, y + BLOCK_SIZE / 2, z - 1.0f);
-            glVertex3f(x - BLOCK_SIZE / 2, y + BLOCK_SIZE / 2, z - 1.0f);
-            glVertex3f(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, z - 1.0f);
-            glVertex3f(x + BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, z - 1.0f);
+            glVertex3f(x + BLOCK_SIZE / 2, y + BLOCK_SIZE / 2, z - 0.2f);
+            glVertex3f(x - BLOCK_SIZE / 2, y + BLOCK_SIZE / 2, z - 0.2f);
+            glVertex3f(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, z - 0.2f);
+            glVertex3f(x + BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, z - 0.2f);
         glEnd();
     }
 	return;
@@ -104,19 +106,34 @@ void drawBlock(Block block){
 void drawContainer()
 {
     glColor3f(1.0f,1.0f,1.0f);
+    glBegin(GL_LINES);
+        glVertex3f(LEFT_BORDER,TOP_BORDER,-1.0f);
+        glVertex3f(LEFT_BORDER,BOTTOM_BORDER,-1.0f);
+    glEnd();
+    glBegin(GL_LINES);
+        glVertex3f(RIGHT_BORDER,TOP_BORDER,-1.0f);
+        glVertex3f(RIGHT_BORDER,BOTTOM_BORDER,-1.0f);
+    glEnd();
+    glBegin(GL_LINES);
+        glVertex3f(LEFT_BORDER,BOTTOM_BORDER,-1.0f);
+        glVertex3f(RIGHT_BORDER,BOTTOM_BORDER,-1.0f);
+    glEnd();
 
-    glBegin(GL_LINES);
-        glVertex3f(LEFT_BORDER,TOP_BORDER,0.0f);
-        glVertex3f(LEFT_BORDER,BOTTOM_BORDER,0.0f);
-    glEnd();
-    glBegin(GL_LINES);
-        glVertex3f(RIGHT_BORDER,TOP_BORDER,0.0f);
-        glVertex3f(RIGHT_BORDER,BOTTOM_BORDER,0.0f);
-    glEnd();
-    glBegin(GL_LINES);
-        glVertex3f(LEFT_BORDER,BOTTOM_BORDER,0.0f);
-        glVertex3f(RIGHT_BORDER,BOTTOM_BORDER,0.0f);
-    glEnd();
+    glColor3f(0.1f,0.1f,0.1f);
+    for (int i = 1;i <= ROW;i++)
+    {
+        glBegin(GL_LINES);
+            glVertex3f(LEFT_BORDER,BOTTOM_BORDER + i * BLOCK_SIZE,0.1f);
+            glVertex3f(RIGHT_BORDER,BOTTOM_BORDER + i * BLOCK_SIZE,0.1f);
+        glEnd();
+    }
+    for (int i = 1;i <= COLUMN;i++)
+    {
+        glBegin(GL_LINES);
+            glVertex3f(LEFT_BORDER + i * BLOCK_SIZE,TOP_BORDER,0.1f);
+            glVertex3f(LEFT_BORDER + i * BLOCK_SIZE,BOTTOM_BORDER,0.1f);
+        glEnd();
+    }
 }
 
 void drawTetris()
@@ -131,6 +148,7 @@ void drawTetris()
             drawBlock(current_block);
         else
         {
+            current_block.occupy();
             block_list.push_back(current_block);
             current_block = next_block;
             getNextBlock();
@@ -205,9 +223,9 @@ int main(int argc,char *argv[])
     glutInitWindowPosition(100,100);
     glutCreateWindow("Tetris");
     init();
-    glutDisplayFunc(drawTetris);
     glutSpecialFunc(keyboardSpecial);
     glutKeyboardFunc(keyboardControl);
+    glutDisplayFunc(drawTetris);
     refreshTetris(0);
     glutMainLoop();
     return 0;
