@@ -3,6 +3,8 @@
 #include "settings.h"
 using namespace std;
 
+bool judge_row();
+
 struct Point
 {
     int row;
@@ -31,6 +33,7 @@ public:
     int base_depth;
     bool isStop;
     float color[3];
+    char type;
 
     void down();
     void left();
@@ -58,6 +61,7 @@ public:
         color[0] = 0.0f;
         color[1] = 0.0f;
         color[2] = 1.0f;
+        type = 'S';
     }
 };
 
@@ -74,6 +78,7 @@ public:
         color[0] = 1.0f;
         color[1] = 0.0f;
         color[2] = 1.0f;
+        type = 'Z';
     }
 };
 
@@ -90,6 +95,7 @@ public:
         color[0] = 1.0f;
         color[1] = 0.5f;
         color[2] = 0.0f;
+        type = 'L';
     }
 };
 
@@ -106,6 +112,7 @@ public:
         color[0] = 1.0f;
         color[1] = 1.0f;
         color[2] = 0.0f;
+        type = 'J';
     }
 };
 
@@ -122,6 +129,7 @@ public:
         color[0] = 1.0f;
         color[1] = 0.0f;
         color[2] = 0.0f;
+        type = 'I';
     }
 };
 
@@ -138,6 +146,7 @@ public:
         color[0] = 0.0f;
         color[1] = 1.0f;
         color[2] = 1.0f;
+        type = 'O';
     }
 };
 
@@ -154,6 +163,7 @@ public:
         color[0] = 0.0f;
         color[1] = 1.0f;
         color[2] = 0.0f;
+        type = 'T';
     }
 };
 

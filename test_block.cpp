@@ -144,16 +144,14 @@ void drawTetris()
     drawContainer();
     glPushMatrix();
         glTranslatef(BLOCK_SIZE - 1.0f,BLOCK_SIZE - 1.0f,0.0f);
-        if (!current_block.isBottom())
+        if (!current_block.isStop)
             drawBlock(current_block);
         else
         {
-            block_list.push_back(current_block);
             current_block.occupy();
+            block_list.push_back(current_block);
             current_block = next_block;
             getNextBlock();
-            while (judge_row());
-
         }
         for (int i = 0;i < block_list.size();i++)
             drawBlock(block_list[i]);

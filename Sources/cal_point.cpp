@@ -10,30 +10,6 @@
 #include "../Headers/components.h"
 #endif
 
-void erase_row(int row)
-{
-    list<Point>::iterator p;
-    for (int i = 0;i < block_list.size();i++)
-    {
-        p = block_list[i].points.begin();
-        block_list[i].clear();
-        while (p != block_list[i].points.end())
-        {
-            if ((*p).row == row)
-            {
-                p = block_list[i].points.erase(p);
-                row_fill[row]--;
-            }
-            else if ((*p).row > row)
-            {
-                (*p).row--;
-            }
-            p++;
-        }
-        block_list[i].occupy();
-    }
-}
-
 void Block::down()
 {
     list<Point>::iterator p = (this->points).begin();
@@ -76,14 +52,73 @@ void Block::drop()
     return;
 }
 
+void erase_row(int row)
+{
+    cout << row << endl;
+    for (int i = 10; i > 0; i--){
+        cout << row_fill[i] << "     ";
+        for (int j = 1; j <= COLUMN; j++)
+            cout << block_map[i][j] << " ";
+        cout << endl;
+    }
+    cout << endl;
+
+    list<Point>::iterator p;
+    for (int i = 0;i < block_list.size();i++)
+    {
+        if (block_list[i].points.empty())
+            continue;
+
+        p = block_list[i].points.begin();
+        block_list[i].clear();
+        while (p != block_list[i].points.end())
+        {
+            if ((*p).row == row)
+            {
+                p = block_list[i].points.erase(p);
+            }
+            else if ((*p).row > row)
+            {
+                (*p).row--;
+                p++;
+            }
+            else
+                p++;
+        }
+    }
+
+    for (int i = 0; i <= ROW+1; i++)
+        row_fill[i] = 0;
+    for (int i = 0; i < block_list.size(); i++)
+        if (!block_list[i].points.empty())
+            block_list[i].occupy();
+}
+
+bool judge_row(){
+    for (int i = 10; i > 0; i--){
+        cout << row_fill[i] << "     ";
+        for (int j = 1; j <= COLUMN; j++)
+            cout << block_map[i][j] << " ";
+        cout << endl;
+    }
+    cout << endl;
+
+    for (int i = 1; row_fill[i] > 0; i++)
+        if (row_fill[i] >= COLUMN){
+            erase_row(i);
+            return true;
+        }
+
+    return false;
+}
+
 void Block::occupy()
 {
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
     {
         block_map[(*p).row][(*p).column] = 1;
-        if (++row_fill[(*p).row] >= COLUMN)
-            erase_row((*p).row);
+        row_fill[p->row]++;
         p++;
     }
 }
