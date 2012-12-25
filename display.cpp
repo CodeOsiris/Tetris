@@ -16,14 +16,13 @@
 
 //Components
 Block current_block,next_block;
-int block_map[ROW + 2][COLUMN + 2];
+Point block_map[ROW + 2][COLUMN + 2];
 int row_fill[ROW + 2];
 
 //View Parameters
 clock_t previous,current;
 int speed = 90000;
-int dropspeed = 200;
-vector<Block> block_list;
+int dropspeed = 10000;
 
 void getNextBlock()
 {
@@ -67,8 +66,8 @@ void init()
         for (int j = 0;j <= COLUMN + 1;j++)
         {
             if (i == 0 || i == ROW + 1 || j == 0 || j == COLUMN + 1)
-                block_map[i][j] = 1;
-            else block_map[i][j] = 0;
+                block_map[i][j] = Point(0,i,j,0,true);
+            else block_map[i][j] = Point(0,i,j,0,false);
         }
         row_fill[i] = 0;
     }
@@ -83,7 +82,7 @@ void drawBlock(Block block){
     list<Point>::iterator p;
     for (p = block.points.begin();p != block.points.end();p++)
     {
-        double x = (*p).column * BLOCK_SIZE, y = (*p).row * BLOCK_SIZE, z = (*p).depth * BLOCK_SIZE;
+        double x = p->column * BLOCK_SIZE, y = p->row * BLOCK_SIZE, z = p->depth * BLOCK_SIZE;
         glColor3f(block.color[0],block.color[1],block.color[2]);
         glBegin(GL_QUADS);
             glVertex3f(x + BLOCK_SIZE / 2, y + BLOCK_SIZE / 2, z + 0.0f);
@@ -101,6 +100,35 @@ void drawBlock(Block block){
         glEnd();
     }
 	return;
+}
+
+void drawPoint()
+{
+    for (int i = 1;i <= ROW;i++)
+    {
+        for (int j = 1;j <= COLUMN;j++)
+        {
+            double x = j * BLOCK_SIZE, y = i * BLOCK_SIZE, z = 0 * BLOCK_SIZE;
+            if (block_map[i][j].isOccupy)
+            {
+                glColor3f(block_map[i][j].color[0],block_map[i][j].color[1],block_map[i][j].color[2]);
+                glBegin(GL_QUADS);
+                    glVertex3f(x + BLOCK_SIZE / 2, y + BLOCK_SIZE / 2, z + 0.0f);
+                    glVertex3f(x - BLOCK_SIZE / 2, y + BLOCK_SIZE / 2, z + 0.0f);
+                    glVertex3f(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, z + 0.0f);
+                    glVertex3f(x + BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, z + 0.0f);
+                glEnd();
+
+                glColor3f(0.4f,0.4f,0.4f);
+                glBegin(GL_LINE_LOOP);
+                    glVertex3f(x + BLOCK_SIZE / 2, y + BLOCK_SIZE / 2, z - 0.2f);
+                    glVertex3f(x - BLOCK_SIZE / 2, y + BLOCK_SIZE / 2, z - 0.2f);
+                    glVertex3f(x - BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, z - 0.2f);
+                    glVertex3f(x + BLOCK_SIZE / 2, y - BLOCK_SIZE / 2, z - 0.2f);
+                glEnd();
+            }
+        }
+    }
 }
 
 void drawContainer()
@@ -144,19 +172,16 @@ void drawTetris()
     drawContainer();
     glPushMatrix();
         glTranslatef(BLOCK_SIZE - 1.0f,BLOCK_SIZE - 1.0f,0.0f);
+        drawPoint();
         if (!current_block.isBottom())
             drawBlock(current_block);
         else
         {
-            block_list.push_back(current_block);
             current_block.occupy();
             current_block = next_block;
             getNextBlock();
             while (judge_row());
-
         }
-        for (int i = 0;i < block_list.size();i++)
-            drawBlock(block_list[i]);
     glPopMatrix();
 
     glPushMatrix();
@@ -201,7 +226,20 @@ void keyboardSpecial(int key,int x,int y)
             break;
         case GLUT_KEY_DOWN:
             if (!current_block.isBottom())
-                current_block.drop();
+            {
+                clock_t previoust,currentt;
+                previoust = clock();
+                this->down();
+                while (!(this->isBottom()))
+                {
+                    if (currentt - previoust >= dropspeed)
+                    {
+                        this->down();
+                        previoust = clock();
+                    }
+                    currentt = clock();
+                }
+            }
             break;
     }
 }
