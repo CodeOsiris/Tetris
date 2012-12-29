@@ -14,50 +14,35 @@ int Block::index = 0;
 
 void Block::down()
 {
-    this->clear();
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
         (*p++).row--;
-    this->occupy();
     return;
 }
 
 void Block::left()
 {
-    this->clear();
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
         (*p++).column--;
-    this->occupy();
     return;
 }
 
 void Block::right()
 {
-    this->clear();
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
         (*p++).column++;
     p = (this->points).begin();
-    this->occupy();
     return;
 }
 
 void Block::drop()
 {
-    clock_t previous,current;
-    previous = clock();
-    this->down();
-    while (!(this->isBottom()))
+    while (!this->isBottom())
     {
-        if (current - previous >= dropspeed)
-        {
-            this->down();
-            previous = clock();
-        }
-        current = clock();
+        this->down();
     }
-    return;
 }
 
 void erase_row(int row)
@@ -77,7 +62,7 @@ void erase_row(int row)
 }
 
 bool judge_row(){
-    for (int i = 1; row_fill[i] > 0; i++)
+    for (int i = 1; i <= ROW; i++)
         if (row_fill[i] >= COLUMN)
         {
             erase_row(i);
@@ -92,7 +77,7 @@ void Block::occupy()
     while (p != (this->points).end())
     {
         block_map[p->row][p->column].parent = this->index;
-        block_map[p->row][p->column].isOccupy = true;;
+        block_map[p->row][p->column].isOccupy = true;
         row_fill[p->row]++;
         for (int i = 0;i < 3;i++)
             block_map[p->row][p->column].color[i] = this->color[i];
@@ -124,10 +109,7 @@ bool Block::isBottom()
             continue;
         }
         else if (block_map[p->row - 1][p->column].isOccupy == true)
-        {
-            this->isStop = true;
             return true;
-        }
         else p++;
     }
     return false;
@@ -186,7 +168,6 @@ bool Block::isRight()
 
 void Block::rotate()
 {
-    this->clear();
     list<Point>::iterator base = (this->points).begin(),p = (this->points).begin();
     int tmpr,tmpc;
     while (p != (this->points).end())
@@ -203,5 +184,4 @@ void Block::rotate()
         this->left();
     while (this->isTop())
         this->down();
-    this->occupy();
 }

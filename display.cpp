@@ -21,8 +21,9 @@ int row_fill[ROW + 2];
 
 //View Parameters
 clock_t previous,current;
+int clock_switch = 1;
 int speed = 90000;
-int dropspeed = 10000;
+int dropspeed = 100;
 
 void getNextBlock()
 {
@@ -169,6 +170,14 @@ void drawTetris()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
+    /*for (int i = ROW;i >= 1;i--)
+    {
+        for (int j = 1;j <= COLUMN;j++)
+        {
+            printf("%2d ",block_map[i][j].parent);
+        }
+        printf("\n");
+    }*/
     drawContainer();
     glPushMatrix();
         glTranslatef(BLOCK_SIZE - 1.0f,BLOCK_SIZE - 1.0f,0.0f);
@@ -178,6 +187,7 @@ void drawTetris()
         else
         {
             current_block.occupy();
+            current_block.isStop = true;
             current_block = next_block;
             getNextBlock();
             while (judge_row());
@@ -196,11 +206,12 @@ void drawTetris()
 void refreshTetris(int c)
 {
     current = clock();
-    if (current - previous >= speed)
+    if (current - previous >= (speed * (clock_switch % 10) + dropspeed * (clock_switch / 10) / 1000))
     {
         if (!current_block.isBottom())
             current_block.down();
         previous = clock();
+        clock_switch = 1;
     }
 
     glutPostRedisplay();
@@ -209,15 +220,14 @@ void refreshTetris(int c)
 
 void keyboardSpecial(int key,int x,int y)
 {
-    glutSetKeyRepeat(0);
     switch (key)
     {
         case GLUT_KEY_LEFT:
-            if (!current_block.isLeft() && !current_block.isBottom())
+            if (!current_block.isLeft())
                 current_block.left();
             break;
         case GLUT_KEY_RIGHT:
-            if (!current_block.isRight() && !current_block.isBottom())
+            if (!current_block.isRight())
                 current_block.right();
             break;
         case GLUT_KEY_UP:
@@ -225,21 +235,7 @@ void keyboardSpecial(int key,int x,int y)
                 current_block.rotate();
             break;
         case GLUT_KEY_DOWN:
-            if (!current_block.isBottom())
-            {
-                clock_t previoust,currentt;
-                previoust = clock();
-                this->down();
-                while (!(this->isBottom()))
-                {
-                    if (currentt - previoust >= dropspeed)
-                    {
-                        this->down();
-                        previoust = clock();
-                    }
-                    currentt = clock();
-                }
-            }
+            clock_switch = 10;
             break;
     }
 }
@@ -250,6 +246,10 @@ void keyboardControl(unsigned char key,int x,int y)
     {
 		case 27:
 			exit(0);
+        case 32:
+            if (!current_block.isBottom())
+                current_block.drop();
+            break;
         default:
             break;
     }
