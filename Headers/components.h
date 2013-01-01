@@ -44,6 +44,8 @@ public:
     void down();
     void left();
     void right();
+    void forth();
+    void back();
     void drop();
     void rotate();
     void occupy();
@@ -52,6 +54,8 @@ public:
     bool isTop();
     bool isLeft();
     bool isRight();
+    bool isFront();
+    bool isBack();
 };
 
 class S_Block: public Block
@@ -174,5 +178,5 @@ public:
 };
 
 extern vector<Block> block_list;
-extern Point block_map[ROW + 2][COLUMN + 2];
+extern Point block_map[ROW + 2][COLUMN + 2][DEPTH + 2];
 #endif
