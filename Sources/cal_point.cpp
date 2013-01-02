@@ -221,12 +221,13 @@ bool Block::isBack()
 void Block::rotate_z()
 {
     list<Point>::iterator p = (this->points).begin();
-    Point base(this->index,this->center_row(),this->center_column(),this->center_depth());
+    float base_row = ((this->points).begin())->row;
+    float base_column =( (this->points).begin())->column;
     int tmpr,tmpc;
     while (p != (this->points).end())
     {
-        tmpr = base.row - (p->column - base.column);
-        tmpc = base.column + (p->row - base.row);
+        tmpr = base_row - (p->column - base_column);
+        tmpc = base_column + (p->row - base_row);
         p->row = tmpr;
         p->column = tmpc;
         p++;

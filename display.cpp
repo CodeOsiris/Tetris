@@ -158,7 +158,7 @@ void drawTetris()
     gluPerspective(60.0,(GLfloat)scr_w / (GLfloat)scr_h,0.1,100.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(-0.3f,0.6f,3.0f,-0.3f,0.0f,0.0f,0.0f,1.0f,0.0f);
+    gluLookAt(-0.4f,3.0f,-0.3f,-0.4f,0.0f,-0.3f,0.0f,0.0f,-1.0f);
     //printf("%d %d %d\n",ROW,COLUMN,DEPTH);
     //printf("%d %d %d\n",(current_block.points.begin())->row,(current_block.points.begin())->column,(current_block.points.begin())->depth);
 /*
@@ -181,12 +181,12 @@ void drawTetris()
         if (current_block.isBottom())
         {
             isNext = true;
-            //while (judge_row());
+            while (judge_row());
         }
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(BLOCK_SIZE + 0.0f,BLOCK_SIZE - 1.05f,0.0f);
+        glTranslatef(BLOCK_SIZE + 0.0f,BLOCK_SIZE - 1.05f,-1.0f);
         drawBlock(next_block);
     glPopMatrix();
 

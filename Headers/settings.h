@@ -24,7 +24,7 @@
 using namespace std;
 
 //Basic Settings
-const float BLOCK_SIZE = 0.05f;
+const float BLOCK_SIZE = 0.1f;
 const int BLOCK_NUM = 4;
 const float BOTTOM_BORDER = -1.0f + BLOCK_SIZE * 3 / 2;
 const float TOP_BORDER = 1.0f - BLOCK_SIZE / 2;
