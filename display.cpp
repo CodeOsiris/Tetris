@@ -24,6 +24,7 @@ clock_t previous,current;
 int clock_switch = 1;
 int speed = 90000;
 int dropspeed = 100;
+bool isNext = false;
 int scr_w = 600;
 int scr_h = 600;
 
@@ -33,25 +34,25 @@ void getNextBlock()
     switch (block_type)
     {
         case 0:
-            next_block = S_Block(START_ROW,START_COLUMN);
+            next_block = S_Block(START_ROW,START_COLUMN,START_DEPTH);
             break;
         case 1:
-            next_block = Z_Block(START_ROW,START_COLUMN);
+            next_block = Z_Block(START_ROW,START_COLUMN,START_DEPTH);
             break;
         case 2:
-            next_block = L_Block(START_ROW,START_COLUMN);
+            next_block = L_Block(START_ROW,START_COLUMN,START_DEPTH);
             break;
         case 3:
-            next_block = J_Block(START_ROW,START_COLUMN);
+            next_block = J_Block(START_ROW,START_COLUMN,START_DEPTH);
             break;
         case 4:
-            next_block = I_Block(START_ROW,START_COLUMN);
+            next_block = I_Block(START_ROW,START_COLUMN,START_DEPTH);
             break;
         case 5:
-            next_block = O_Block(START_ROW,START_COLUMN);
+            next_block = O_Block(START_ROW,START_COLUMN,START_DEPTH);
             break;
         case 6:
-            next_block = T_Block(START_ROW,START_COLUMN);
+            next_block = T_Block(START_ROW,START_COLUMN,START_DEPTH);
             break;
     }
 }
@@ -104,7 +105,7 @@ void drawPoint()
     {
         for (int j = 1;j <= COLUMN;j++)
         {
-            for (int k = 1;k < DEPTH;k++)
+            for (int k = 1;k <= DEPTH;k++)
             {
                 double x = j * BLOCK_SIZE, y = i * BLOCK_SIZE, z = k * BLOCK_SIZE;
                 if (block_map[i][j][k].isOccupy)
@@ -146,22 +147,6 @@ void drawContainer()
         glVertex3f(LEFT_BORDER,BOTTOM_BORDER,BACK_BORDER);
     glEnd();
 
-/*    glColor3f(0.1f,0.1f,0.1f);
-    for (int i = 1;i <= ROW;i++)
-    {
-        glBegin(GL_LINES);
-            glVertex3f(LEFT_BORDER,BOTTOM_BORDER + i * BLOCK_SIZE,0.0f);
-            glVertex3f(RIGHT_BORDER,BOTTOM_BORDER + i * BLOCK_SIZE,0.0f);
-        glEnd();
-    }
-    for (int i = 1;i <= COLUMN;i++)
-    {
-        glBegin(GL_LINES);
-            glVertex3f(LEFT_BORDER + i * BLOCK_SIZE,TOP_BORDER,0.0f);
-            glVertex3f(LEFT_BORDER + i * BLOCK_SIZE,BOTTOM_BORDER,0.0f);
-        glEnd();
-    }
-    */
 }
 
 void drawTetris()
@@ -173,29 +158,30 @@ void drawTetris()
     gluPerspective(60.0,(GLfloat)scr_w / (GLfloat)scr_h,0.1,100.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(-0.3f,1.0f,3.0f,-0.3f,0.0f,0.0f,0.0f,1.0f,0.0f);
-
-    /*for (int i = ROW;i >= 1;i--)
+    gluLookAt(-0.3f,0.6f,3.0f,-0.3f,0.0f,0.0f,0.0f,1.0f,0.0f);
+    //printf("%d %d %d\n",ROW,COLUMN,DEPTH);
+    //printf("%d %d %d\n",(current_block.points.begin())->row,(current_block.points.begin())->column,(current_block.points.begin())->depth);
+/*
+    for (int i = ROW ;i >= 1;i--)
     {
         for (int j = 1;j <= COLUMN;j++)
         {
-            printf("%2d ",block_map[i][j].parent);
+            for (int k = 1;k <= DEPTH;k++)
+                printf("%d ",block_map[i][j][DEPTH].isOccupy);
+            printf("\n");
         }
         printf("\n");
-    }*/
+    }
+*/
     drawContainer();
     glPushMatrix();
-        glTranslatef(BLOCK_SIZE - 1.0f,BLOCK_SIZE - 1.0f,-1.0f);
+        glTranslatef(BLOCK_SIZE - 1.0f,BLOCK_SIZE - 1.0f,BLOCK_SIZE - 1.0f);
         drawPoint();
-        if (!current_block.isBottom())
-            drawBlock(current_block);
-        else
+        drawBlock(current_block);
+        if (current_block.isBottom())
         {
-            current_block.occupy();
-            current_block.isStop = true;
-            current_block = next_block;
-            getNextBlock();
-            while (judge_row());
+            isNext = true;
+            //while (judge_row());
         }
     glPopMatrix();
 
@@ -224,6 +210,14 @@ void refreshTetris(int c)
             current_block.down();
         previous = clock();
         clock_switch = 1;
+        if (isNext)
+        {
+            current_block.occupy();
+            current_block.isStop = true;
+            current_block = next_block;
+            getNextBlock();
+            isNext = false;
+        }
     }
 
     glutPostRedisplay();
@@ -265,6 +259,9 @@ void keyboardControl(unsigned char key,int x,int y)
         case 32:
             if (!current_block.isBottom())
                 current_block.drop();
+            break;
+        case 'e':
+            current_block.rotate_z();
             break;
         default:
             break;

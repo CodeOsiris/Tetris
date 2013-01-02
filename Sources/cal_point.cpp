@@ -218,22 +218,41 @@ bool Block::isBack()
     return false;
 }
 
-void Block::rotate()
+void Block::rotate_z()
 {
-    list<Point>::iterator base = (this->points).begin(),p = (this->points).begin();
+    list<Point>::iterator p = (this->points).begin();
+    Point base(this->index,this->center_row(),this->center_column(),this->center_depth());
     int tmpr,tmpc;
     while (p != (this->points).end())
     {
-        tmpr = (*base).row - (p->column - (*base).column);
-        tmpc = (*base).column + (p->row - (*base).row);
+        tmpr = base.row - (p->column - base.column);
+        tmpc = base.column + (p->row - base.row);
         p->row = tmpr;
         p->column = tmpc;
         p++;
     }
+    if (this->fix_row * this->fix_column > 0)
+        this->fix_column = -this->fix_column;
+    else this->fix_row = -this->fix_row;
     while (this->isLeft())
         this->right();
     while (this->isRight())
         this->left();
     while (this->isTop())
         this->down();
+}
+
+float Block::center_row()
+{
+    return ((this->points).begin())->row + fix_row;
+}
+
+float Block::center_column()
+{
+    return ((this->points).begin())->column + fix_column;
+}
+
+float Block::center_depth()
+{
+    return ((this->points).begin())->depth + fix_depth;
 }
