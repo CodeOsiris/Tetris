@@ -22,7 +22,7 @@ int level_fill[ROW + 2];
 //View Parameters
 clock_t previous,current;
 int clock_switch = 1;
-int speed = 90000;
+int speed = 150000;
 int dropspeed = 100;
 bool isNext = false;
 int scr_w = 600;
@@ -65,6 +65,8 @@ void init()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     for (int i = 0;i <= ROW + 1;i++)
     {
         for (int j = 0;j <= COLUMN + 1;j++)
@@ -90,10 +92,11 @@ void drawBlock(Block block){
     for (p = block.points.begin();p != block.points.end();p++)
     {
         double x = p->column * BLOCK_SIZE, y = p->row * BLOCK_SIZE, z = p->depth * BLOCK_SIZE;
-        glColor3f(block.color[0],block.color[1],block.color[2]);
+        //glColor3f(block.color[0],block.color[1],block.color[2]);
         glPushMatrix();
             glTranslatef(x,y,z);
-            glutWireCube(BLOCK_SIZE);
+            glColor4f(0.0f,0.0f,1.0f,0.6f);
+            glutSolidCube(BLOCK_SIZE);
         glPopMatrix();
     }
 	return;
@@ -101,6 +104,10 @@ void drawBlock(Block block){
 
 void drawPoint()
 {
+    float color[4][3] = {0.0f,1.0f,0.0f,
+                         1.0f,1.0f,0.0f,
+                         1.0f,0.5f,0.0f,
+                         1.0f,0.0f,1.0f};
     for (int i = 1;i <= ROW;i++)
     {
         for (int j = 1;j <= COLUMN;j++)
@@ -110,10 +117,11 @@ void drawPoint()
                 double x = j * BLOCK_SIZE, y = i * BLOCK_SIZE, z = k * BLOCK_SIZE;
                 if (block_map[i][j][k].isOccupy)
                 {
-                    glColor3f(block_map[i][j][k].color[0],block_map[i][j][k].color[1],block_map[i][j][k].color[2]);
+                    //glColor3f(block_map[i][j][k].color[0],block_map[i][j][k].color[1],block_map[i][j][k].color[2]);
                     glPushMatrix();
                         glTranslatef(x,y,z);
-                        glutWireCube(BLOCK_SIZE);
+                        glColor3f(color[i % 4][0],color[i % 4][1],color[i % 4][2]);
+                        glutSolidCube(BLOCK_SIZE);
                     glPopMatrix();
                 }
             }
@@ -158,7 +166,7 @@ void drawTetris()
     gluPerspective(60.0,(GLfloat)scr_w / (GLfloat)scr_h,0.1,100.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(-0.4f,3.0f,-0.3f,-0.4f,0.0f,-0.3f,0.0f,0.0f,-1.0f);
+    gluLookAt(-0.4f,0.5f,3.0f,-0.4f,-0.3f,0.0f,0.0f,1.0f,0.0f);
     //printf("%d %d %d\n",ROW,COLUMN,DEPTH);
     //printf("%d %d %d\n",(current_block.points.begin())->row,(current_block.points.begin())->column,(current_block.points.begin())->depth);
 /*
@@ -180,8 +188,13 @@ void drawTetris()
         drawBlock(current_block);
         if (current_block.isBottom())
         {
-            isNext = true;
-            while (judge_row());
+            if (block_map[START_ROW][START_COLUMN][START_DEPTH].isOccupy)
+                printf("lose\n");
+            else
+            {
+                isNext = true;
+                while (judge_row());
+            }
         }
     glPopMatrix();
 
@@ -239,13 +252,10 @@ void keyboardSpecial(int key,int x,int y)
         case GLUT_KEY_UP:
             if (!current_block.isBack())
                 current_block.back();
-            //if (!current_block.isBottom())
-            //    current_block.rotate();
             break;
         case GLUT_KEY_DOWN:
             if (!current_block.isFront())
                 current_block.forth();
-            //clock_switch = 10;
             break;
     }
 }
@@ -260,8 +270,20 @@ void keyboardControl(unsigned char key,int x,int y)
             if (!current_block.isBottom())
                 current_block.drop();
             break;
+        case 'q':
+            if (!current_block.isBottom())
+                current_block.rotate_x();
+            break;
+        case 'w':
+            if (!current_block.isBottom())
+                current_block.rotate_y();
+            break;
         case 'e':
-            current_block.rotate_z();
+            if (!current_block.isBottom())
+                current_block.rotate_z();
+            break;
+        case 's':
+            clock_switch = 10;
             break;
         default:
             break;

@@ -24,12 +24,12 @@
 using namespace std;
 
 //Basic Settings
-const float BLOCK_SIZE = 0.1f;
+const float BLOCK_SIZE = 0.12f;
 const int BLOCK_NUM = 4;
 const float BOTTOM_BORDER = -1.0f + BLOCK_SIZE * 3 / 2;
 const float TOP_BORDER = 1.0f - BLOCK_SIZE / 2;
 const float LEFT_BORDER = -1.0f + BLOCK_SIZE * 3 / 2;
-const float RIGHT_BORDER = 0.0f + BLOCK_SIZE / 2;
+const float RIGHT_BORDER = 0.0f - BLOCK_SIZE / 2;
 const float FRONT_BORDER = 0.0f - BLOCK_SIZE / 2;
 const float BACK_BORDER = -1.0f + BLOCK_SIZE * 3 / 2;
 const float BOTTOM_NEXT = 0.55f + BLOCK_SIZE / 2;

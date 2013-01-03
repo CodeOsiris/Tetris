@@ -121,12 +121,12 @@ bool Block::isBottom()
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
     {
-        if (block_map[p->row - 1][p->column][p->depth].parent == this->index)
+        if (p->row >= 1 && block_map[p->row - 1][p->column][p->depth].parent == this->index)
         {
             p++;
             continue;
         }
-        else if (block_map[p->row - 1][p->column][p->depth].isOccupy == true)
+        else if (p->row < 1 || block_map[p->row - 1][p->column][p->depth].isOccupy == true)
             return true;
         else p++;
     }
@@ -138,12 +138,12 @@ bool Block::isTop()
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
     {
-        if (block_map[p->row + 1][p->column][p->depth].parent == this->index)
+        if (p->row <= ROW && block_map[p->row + 1][p->column][p->depth].parent == this->index)
         {
             p++;
             continue;
         }
-        else if (block_map[p->row + 1][p->column][p->depth].isOccupy == true)
+        else if (p->row > ROW || block_map[p->row + 1][p->column][p->depth].isOccupy == true)
             return true;
         else p++;
     }
@@ -155,12 +155,12 @@ bool Block::isLeft()
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
     {
-        if (block_map[p->row][p->column - 1][p->depth].parent == this->index)
+        if (p->column >= 1 && block_map[p->row][p->column - 1][p->depth].parent == this->index)
         {
             p++;
             continue;
         }
-        else if (block_map[p->row][p->column - 1][p->depth].isOccupy == true)
+        else if (p->column < 1 || block_map[p->row][p->column - 1][p->depth].isOccupy == true)
             return true;
         else p++;
     }
@@ -172,12 +172,12 @@ bool Block::isRight()
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
     {
-        if (block_map[p->row][p->column + 1][p->depth].parent == this->index)
+        if (p->column <= COLUMN && block_map[p->row][p->column + 1][p->depth].parent == this->index)
         {
             p++;
             continue;
         }
-        else if (block_map[p->row][p->column + 1][p->depth].isOccupy == true)
+        else if (p->column > COLUMN || block_map[p->row][p->column + 1][p->depth].isOccupy == true)
             return true;
         else p++;
     }
@@ -189,12 +189,12 @@ bool Block::isFront()
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
     {
-        if (block_map[p->row][p->column][p->depth + 1].parent == this->index)
+        if (p->depth <= DEPTH && block_map[p->row][p->column][p->depth + 1].parent == this->index)
         {
             p++;
             continue;
         }
-        else if (block_map[p->row][p->column][p->depth + 1].isOccupy == true)
+        else if (p->depth > DEPTH || block_map[p->row][p->column][p->depth + 1].isOccupy == true)
             return true;
         else p++;
     }
@@ -206,23 +206,85 @@ bool Block::isBack()
     list<Point>::iterator p = (this->points).begin();
     while (p != (this->points).end())
     {
-        if (block_map[p->row][p->column][p->depth - 1].parent == this->index)
+        if (p->depth >= 1 && block_map[p->row][p->column][p->depth - 1].parent == this->index)
         {
             p++;
             continue;
         }
-        else if (block_map[p->row][p->column][p->depth - 1].isOccupy == true)
+        else if (p->depth < 1 || block_map[p->row][p->column][p->depth - 1].isOccupy == true)
             return true;
         else p++;
     }
     return false;
 }
 
+void Block::rotate_x()
+{
+    list<Point>::iterator p = (this->points).begin();
+//    float base_row = this->center_row();
+//    float base_depth = this->center_depth();
+    float base_row = ((this->points).begin())->row;
+    float base_depth = ((this->points).begin())->depth;
+    int tmpr,tmpd;
+    while (p != (this->points).end())
+    {
+        tmpr = base_row - (p->depth - base_depth);
+        tmpd = base_depth + (p->row - base_row);
+        p->row = tmpr;
+        p->depth = tmpd;
+        p++;
+    }
+    if (this->fix_row * this->fix_depth > 0)
+        this->fix_depth = -this->fix_depth;
+    else this->fix_row = -this->fix_row;
+    while (this->isLeft())
+        this->right();
+    while (this->isRight())
+        this->left();
+    while (this->isBack())
+        this->forth();
+    while (this->isFront())
+        this->back();
+    while (this->isTop())
+        this->down();
+}
+
+void Block::rotate_y()
+{
+    list<Point>::iterator p = (this->points).begin();
+//    float base_column = this->center_column();
+//    float base_depth = this->center_depth();
+    float base_column = ((this->points).begin())->column;
+    float base_depth = ((this->points).begin())->depth;
+    int tmpc,tmpd;
+    while (p != (this->points).end())
+    {
+        tmpc = base_column + (p->depth - base_depth);
+        tmpd = base_depth - (p->column - base_column);
+        p->column = tmpc;
+        p->depth = tmpd;
+        p++;
+    }
+    if (this->fix_column * this->fix_depth > 0)
+        this->fix_column = -this->fix_column;
+    else this->fix_depth = -this->fix_depth;
+    while (this->isLeft())
+        this->right();
+    while (this->isRight())
+        this->left();
+    while (this->isBack())
+        this->forth();
+    while (this->isFront())
+        this->back();
+    while (this->isTop())
+        this->down();
+}
+
 void Block::rotate_z()
 {
     list<Point>::iterator p = (this->points).begin();
-    float base_row = ((this->points).begin())->row;
-    float base_column =( (this->points).begin())->column;
+    float base_row = this->center_row();
+    float base_column = this->center_column();
     int tmpr,tmpc;
     while (p != (this->points).end())
     {
@@ -239,6 +301,10 @@ void Block::rotate_z()
         this->right();
     while (this->isRight())
         this->left();
+    while (this->isBack())
+        this->forth();
+    while (this->isFront())
+        this->back();
     while (this->isTop())
         this->down();
 }
