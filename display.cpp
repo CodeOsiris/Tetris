@@ -30,7 +30,7 @@ int scr_h = 600;
 int status = 0;
 const double pi = acos(-1);
 double anglex = 0.0;
-float eyex = 2.0 * sin(anglex) - 0.44, eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.2, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;
+float eyex = 2.0 * sin(anglex) - 0.44, eyey = 0.6, eyez = 2.0 * cos(anglex) - 0.44, centerx = -0.44, centery = -0.2, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;
 
 void getNextBlock()
 {
@@ -185,18 +185,15 @@ void drawTetris()
 */
     drawContainer();
     glPushMatrix();
-        glTranslatef(BLOCK_SIZE - 1.0f,BLOCK_SIZE - 1.0f,BLOCK_SIZE - 1.0f);
+        glTranslatef(-7 * BLOCK_SIZE,-7 * BLOCK_SIZE,-7 * BLOCK_SIZE);
         drawPoint();
         drawBlock(current_block);
+        while (judge_row());
         if (current_block.isBottom())
         {
             if (block_map[START_ROW][START_COLUMN][START_DEPTH].isOccupy)
                 printf("lose\n");
-            else
-            {
-                isNext = true;
-                while (judge_row());
-            }
+            else isNext = true;
         }
     glPopMatrix();
 
@@ -338,13 +335,13 @@ void keyboardControl(unsigned char key,int x,int y)
             break;
         case 'a':
             anglex -= pi/2;
-            eyex = 2.0 * sin(anglex) - 0.44, eyez = 2.0 * cos(anglex);
-            status = (status+1) % 4;
+            eyex = 2.0 * sin(anglex) - 0.44, eyez = 2.0 * cos(anglex) - 0.44;
+            status = (status + 1) % 4;
             break;
         case 'd':
             anglex += pi/2;
-            eyex = 2.0 * sin(anglex) - 0.44, eyez = 2.0 * cos(anglex);
-            status = (status-1 < 0 ? 3 : status-1) % 4;
+            eyex = 2.0 * sin(anglex) - 0.44, eyez = 2.0 * cos(anglex) - 0.44;
+            status = (status + 3) % 4;
             break;
         case 'q':
             if (!current_block.isBottom())
