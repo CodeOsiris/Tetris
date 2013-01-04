@@ -27,6 +27,9 @@ int dropspeed = 100;
 bool isNext = false;
 int scr_w = 600;
 int scr_h = 600;
+const double pi = acos(-1);
+double anglex = 0.0;
+float eyex = 2.0 * sin(anglex), eyey = 0.3, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;
 
 void getNextBlock()
 {
@@ -166,7 +169,7 @@ void drawTetris()
     gluPerspective(60.0,(GLfloat)scr_w / (GLfloat)scr_h,0.1,100.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    gluLookAt(-0.4f,0.5f,3.0f,-0.4f,-0.3f,0.0f,0.0f,1.0f,0.0f);
+    gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
     //printf("%d %d %d\n",ROW,COLUMN,DEPTH);
     //printf("%d %d %d\n",(current_block.points.begin())->row,(current_block.points.begin())->column,(current_block.points.begin())->depth);
 /*
@@ -269,6 +272,14 @@ void keyboardControl(unsigned char key,int x,int y)
         case 32:
             if (!current_block.isBottom())
                 current_block.drop();
+            break;
+        case 'a':
+            anglex -= 0.2;
+            eyex = 2.0 * sin(anglex), eyez = 2.0 * cos(anglex);
+            break;
+        case 'd':
+            anglex += 0.2;
+            eyex = 2.0 * sin(anglex), eyez = 2.0 * cos(anglex);
             break;
         case 'q':
             if (!current_block.isBottom())
