@@ -29,7 +29,7 @@ int scr_w = 600;
 int scr_h = 600;
 const double pi = acos(-1);
 double anglex = 0.0;
-float eyex = 2.0 * sin(anglex), eyey = 0.3, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;
+float eyex = 2.0 * sin(anglex), eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;
 
 void getNextBlock()
 {
@@ -95,7 +95,6 @@ void drawBlock(Block block){
     for (p = block.points.begin();p != block.points.end();p++)
     {
         double x = p->column * BLOCK_SIZE, y = p->row * BLOCK_SIZE, z = p->depth * BLOCK_SIZE;
-        //glColor3f(block.color[0],block.color[1],block.color[2]);
         glPushMatrix();
             glTranslatef(x,y,z);
             glColor4f(0.0f,0.0f,1.0f,0.6f);
@@ -120,7 +119,6 @@ void drawPoint()
                 double x = j * BLOCK_SIZE, y = i * BLOCK_SIZE, z = k * BLOCK_SIZE;
                 if (block_map[i][j][k].isOccupy)
                 {
-                    //glColor3f(block_map[i][j][k].color[0],block_map[i][j][k].color[1],block_map[i][j][k].color[2]);
                     glPushMatrix();
                         glTranslatef(x,y,z);
                         glColor3f(color[i % 4][0],color[i % 4][1],color[i % 4][2]);
@@ -170,7 +168,7 @@ void drawTetris()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
-    //printf("%d %d %d\n",ROW,COLUMN,DEPTH);
+    printf("%d %d %d\n",ROW,COLUMN,DEPTH);
     //printf("%d %d %d\n",(current_block.points.begin())->row,(current_block.points.begin())->column,(current_block.points.begin())->depth);
 /*
     for (int i = ROW ;i >= 1;i--)

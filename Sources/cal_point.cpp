@@ -238,6 +238,7 @@ void Block::rotate_x()
     if (this->fix_row * this->fix_depth > 0)
         this->fix_depth = -this->fix_depth;
     else this->fix_row = -this->fix_row;
+
 /*    while (this->isLeft())
         this->right();
     while (this->isRight())
@@ -249,12 +250,19 @@ void Block::rotate_x()
     while (this->isTop())
         this->down();
 */
-    if (this->isLeft() || this->isRight() || this->isFront() || this->isBack())
-        *this = tmp;
+    p = (this->points).begin();
+    while (p != (this->points).end())
+        if (p->row < 1 || p->row > ROW || p->column < 1 || p->column > COLUMN || p->depth < 1 || p->depth > DEPTH || block_map[p->row][p->column][p->depth].isOccupy)
+        {
+            *this = tmp;
+            break;
+        }
+        else p++;
 }
 
 void Block::rotate_y()
 {
+    Block tmp = *this;
     list<Point>::iterator p = (this->points).begin();
 //    float base_column = this->center_column();
 //    float base_depth = this->center_depth();
@@ -272,6 +280,7 @@ void Block::rotate_y()
     if (this->fix_column * this->fix_depth > 0)
         this->fix_column = -this->fix_column;
     else this->fix_depth = -this->fix_depth;
+/*    
     while (this->isLeft())
         this->right();
     while (this->isRight())
@@ -282,10 +291,20 @@ void Block::rotate_y()
         this->back();
     while (this->isTop())
         this->down();
+        */
+    p = (this->points).begin();
+    while (p != (this->points).end())
+        if (p->row < 1 || p->row > ROW || p->column < 1 || p->column > COLUMN || p->depth < 1 || p->depth > DEPTH || block_map[p->row][p->column][p->depth].isOccupy)
+        {
+            *this = tmp;
+            break;
+        }
+        else p++;
 }
 
 void Block::rotate_z()
 {
+    Block tmp = *this;
     list<Point>::iterator p = (this->points).begin();
     float base_row = this->center_row();
     float base_column = this->center_column();
@@ -301,6 +320,7 @@ void Block::rotate_z()
     if (this->fix_row * this->fix_column > 0)
         this->fix_column = -this->fix_column;
     else this->fix_row = -this->fix_row;
+/*
     while (this->isLeft())
         this->right();
     while (this->isRight())
@@ -311,6 +331,15 @@ void Block::rotate_z()
         this->back();
     while (this->isTop())
         this->down();
+        */
+    p = (this->points).begin();
+    while (p != (this->points).end())
+        if (p->row < 1 || p->row > ROW || p->column < 1 || p->column > COLUMN || p->depth < 1 || p->depth > DEPTH || block_map[p->row][p->column][p->depth].isOccupy)
+        {
+            *this = tmp;
+            break;
+        }
+        else p++;
 }
 
 float Block::center_row()
