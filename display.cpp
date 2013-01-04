@@ -29,7 +29,7 @@ int scr_w = 600;
 int scr_h = 600;
 const double pi = acos(-1);
 double anglex = 0.0;
-float eyex = 2.0 * sin(anglex), eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;
+float eyex = 2.0 * sin(anglex), eyey = 1.0, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;
 
 void getNextBlock()
 {
@@ -168,7 +168,8 @@ void drawTetris()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
-    printf("%d %d %d\n",ROW,COLUMN,DEPTH);
+    //printf("%d %d %d\n",ROW,COLUMN,DEPTH);
+    //printf("%d \n",level_fill[1]);
     //printf("%d %d %d\n",(current_block.points.begin())->row,(current_block.points.begin())->column,(current_block.points.begin())->depth);
 /*
     for (int i = ROW ;i >= 1;i--)
@@ -184,18 +185,16 @@ void drawTetris()
 */
     drawContainer();
     glPushMatrix();
-        glTranslatef(BLOCK_SIZE - 1.0f,BLOCK_SIZE - 1.0f,BLOCK_SIZE - 1.0f);
+        glTranslatef(-7 * BLOCK_SIZE,-7 * BLOCK_SIZE,-7 * BLOCK_SIZE);
         drawPoint();
         drawBlock(current_block);
+        while (judge_row());
         if (current_block.isBottom())
         {
             if (block_map[START_ROW][START_COLUMN][START_DEPTH].isOccupy)
                 printf("lose\n");
             else
-            {
                 isNext = true;
-                while (judge_row());
-            }
         }
     glPopMatrix();
 
