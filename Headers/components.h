@@ -77,33 +77,10 @@ public:
         *p++ = Point(this->index,base_row,base_column + 1,base_depth);
         *p++ = Point(this->index,base_row - 1,base_column,base_depth);
         *p++ = Point(this->index,base_row - 1,base_column - 1,base_depth);
-        fix_row = -0.5f * BLOCK_SIZE;
-        fix_column = -0.5f * BLOCK_SIZE;
-        fix_depth = 0.0f * BLOCK_SIZE;
         color[0] = 0.0f;
         color[1] = 0.0f;
         color[2] = 1.0f;
         type = 'S';
-    }
-};
-
-class Z_Block: public Block
-{
-public:
-    Z_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)
-    {
-        list<Point>::iterator p = (this->points).begin();
-        *p++ = Point(this->index,base_row,base_column,base_depth);
-        *p++ = Point(this->index,base_row,base_column - 1,base_depth);
-        *p++ = Point(this->index,base_row - 1,base_column,base_depth);
-        *p++ = Point(this->index,base_row - 1,base_column + 1,base_depth);
-        fix_row = -0.5f * BLOCK_SIZE;
-        fix_column = 0.5f * BLOCK_SIZE;
-        fix_depth = 0.0f * BLOCK_SIZE;
-        color[0] = 1.0f;
-        color[1] = 0.0f;
-        color[2] = 1.0f;
-        type = 'Z';
     }
 };
 
@@ -117,33 +94,10 @@ public:
         *p++ = Point(this->index,base_row,base_column - 1,base_depth);
         *p++ = Point(this->index,base_row - 1,base_column,base_depth);
         *p++ = Point(this->index,base_row - 2,base_column,base_depth);
-        fix_row = -0.5f * BLOCK_SIZE;
-        fix_column = -0.5f * BLOCK_SIZE;
-        fix_depth = 0.0f * BLOCK_SIZE;
         color[0] = 1.0f;
         color[1] = 0.5f;
         color[2] = 0.0f;
         type = 'L';
-    }
-};
-
-class J_Block: public Block
-{
-public:
-    J_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)
-    {
-        list<Point>::iterator p = (this->points).begin();
-        *p++ = Point(this->index,base_row,base_column,base_depth);
-        *p++ = Point(this->index,base_row,base_column + 1,base_depth);
-        *p++ = Point(this->index,base_row - 1,base_column,base_depth);
-        *p++ = Point(this->index,base_row - 2,base_column,base_depth);
-        fix_row = -0.5f * BLOCK_SIZE;
-        fix_column = 0.5f * BLOCK_SIZE;
-        fix_depth = 0.0f * BLOCK_SIZE;
-        color[0] = 1.0f;
-        color[1] = 1.0f;
-        color[2] = 0.0f;
-        type = 'J';
     }
 };
 
@@ -157,9 +111,6 @@ public:
         *p++ = Point(this->index,base_row,base_column + 1,base_depth);
         *p++ = Point(this->index,base_row,base_column + 2,base_depth);
         *p++ = Point(this->index,base_row,base_column - 1,base_depth);
-        fix_row = 0.5f * BLOCK_SIZE;
-        fix_column = 0.5f * BLOCK_SIZE;
-        fix_depth = 0.0f * BLOCK_SIZE;
         color[0] = 1.0f;
         color[1] = 0.0f;
         color[2] = 0.0f;
@@ -177,9 +128,6 @@ public:
         *p++ = Point(this->index,base_row - 1,base_column,base_depth);
         *p++ = Point(this->index,base_row,base_column - 1,base_depth);
         *p++ = Point(this->index,base_row - 1,base_column - 1,base_depth);
-        fix_row = -0.5f * BLOCK_SIZE;
-        fix_column = -0.5f * BLOCK_SIZE;
-        fix_depth = 0.0f * BLOCK_SIZE;
         color[0] = 0.0f;
         color[1] = 1.0f;
         color[2] = 1.0f;
@@ -197,28 +145,44 @@ public:
         *p++ = Point(this->index,base_row,base_column - 1,base_depth);
         *p++ = Point(this->index,base_row,base_column + 1,base_depth);
         *p++ = Point(this->index,base_row - 1,base_column,base_depth);
-        fix_row = 1.5f * BLOCK_SIZE;
-        fix_column = 0.5f * BLOCK_SIZE;
-        fix_depth = 0.0f * BLOCK_SIZE;
         color[0] = 0.0f;
         color[1] = 1.0f;
         color[2] = 0.0f;
         type = 'T';
     }
+};
 
-    float center_row()
+class Y_Block: public Block
+{
+public:
+    Y_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)
     {
-        return ((this->points).begin())->row + 1.5f;
+        list<Point>::iterator p = (this->points).begin();
+        *p++ = Point(this->index,base_row,base_column,base_depth);
+        *p++ = Point(this->index,base_row,base_column - 1,base_depth);
+        *p++ = Point(this->index,base_row - 1,base_column,base_depth);
+        *p++ = Point(this->index,base_row,base_column,base_depth + 1);
+        color[0] = 1.0f;
+        color[1] = 0.0f;
+        color[2] = 1.0f;
+        type = 'Y';
     }
+};
 
-    float center_column()
+class N_Block: public Block
+{
+public:
+    N_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)
     {
-        return ((this->points).begin())->column + 0.5f;
-    }
-
-    float center_depth()
-    {
-        return ((this->points).begin())->depth;
+        list<Point>::iterator p = (this->points).begin();
+        *p++ = Point(this->index,base_row,base_column,base_depth);
+        *p++ = Point(this->index,base_row,base_column + 1,base_depth);
+        *p++ = Point(this->index,base_row - 1,base_column,base_depth);
+        *p++ = Point(this->index,base_row - 1,base_column,base_depth + 1);
+        color[0] = 1.0f;
+        color[1] = 0.0f;
+        color[2] = 1.0f;
+        type = 'N';
     }
 };
 

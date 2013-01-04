@@ -344,21 +344,6 @@ void Block::rotate_z()
         else p++;
 }
 
-float Block::center_row()
-{
-    return ((this->points).begin())->row + fix_row;
-}
-
-float Block::center_column()
-{
-    return ((this->points).begin())->column + fix_column;
-}
-
-float Block::center_depth()
-{
-    return ((this->points).begin())->depth + fix_depth;
-}
-
 int Block::toBottom()
 {
     int count = 0;

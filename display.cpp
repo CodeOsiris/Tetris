@@ -41,22 +41,22 @@ void getNextBlock()
             next_block = S_Block(START_ROW,START_COLUMN,START_DEPTH);
             break;
         case 1:
-            next_block = Z_Block(START_ROW,START_COLUMN,START_DEPTH);
-            break;
-        case 2:
             next_block = L_Block(START_ROW,START_COLUMN,START_DEPTH);
             break;
-        case 3:
-            next_block = J_Block(START_ROW,START_COLUMN,START_DEPTH);
-            break;
-        case 4:
+        case 2:
             next_block = I_Block(START_ROW,START_COLUMN,START_DEPTH);
             break;
-        case 5:
+        case 3:
             next_block = O_Block(START_ROW,START_COLUMN,START_DEPTH);
             break;
-        case 6:
+        case 4:
             next_block = T_Block(START_ROW,START_COLUMN,START_DEPTH);
+            break;
+        case 5:
+            next_block = Y_Block(START_ROW,START_COLUMN,START_DEPTH);
+            break;
+        case 6:
+            next_block = N_Block(START_ROW,START_COLUMN,START_DEPTH);
             break;
     }
 }
@@ -207,10 +207,11 @@ void drawTetris()
         }
     glPopMatrix();
 
-    glPushMatrix();
+/*    glPushMatrix();
         glTranslatef(BLOCK_SIZE + 0.0f,BLOCK_SIZE - 1.05f,-1.0f);
         drawBlock(next_block);
     glPopMatrix();
+*/
 
     glFlush();
     glutSwapBuffers();
