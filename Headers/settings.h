@@ -7,6 +7,7 @@
 #include <list>
 #include <vector>
 #include <iterator>
+#include <string>
 #include <ctime>
 
 #ifdef _WIN32

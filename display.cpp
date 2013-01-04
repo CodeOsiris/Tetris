@@ -25,6 +25,7 @@ int clock_switch = 1;
 int speed = 150000;
 int dropspeed = 100;
 bool isNext = false;
+bool isLose = false;
 int scr_w = 600;
 int scr_h = 600;
 int status = 0;
@@ -180,6 +181,7 @@ void drawTetris()
     glLoadIdentity();
     gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
     //printf("%d %d %d\n",ROW,COLUMN,DEPTH);
+    //printf("%d\n",level_fill[1]);
     //printf("%d %d %d\n",(current_block.points.begin())->row,(current_block.points.begin())->column,(current_block.points.begin())->depth);
 /*
     for (int i = ROW ;i >= 1;i--)
@@ -196,15 +198,22 @@ void drawTetris()
     drawContainer();
     glPushMatrix();
         glTranslatef(-7 * BLOCK_SIZE,-7 * BLOCK_SIZE,-7 * BLOCK_SIZE);
-        drawPoint();
-        drawBlock(current_block);
-        while (judge_row());
         if (current_block.isBottom())
         {
             if (block_map[START_ROW][START_COLUMN][START_DEPTH].isOccupy)
-                printf("lose\n");
+            {
+                string str = "You Lose!\nPress F1 to restart";
+                glRasterPos3i(centerx,-1.0f,centerz);
+                glColor3f(1.0f,0.0f,0.0f);
+                for (int i = 0;i < str.length();i++)
+                    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
+                isLose = true;
+            }
             else isNext = true;
         }
+        while (judge_row());
+        drawBlock(current_block);
+        drawPoint();
     glPopMatrix();
 
 /*    glPushMatrix();
@@ -226,6 +235,8 @@ void reshape(int w,int h)
 
 void refreshTetris(int c)
 {
+    if (isLose)
+        return;
     current = clock();
     if (current - previous >= (speed * (clock_switch % 10) + dropspeed * (clock_switch / 10) / 1000))
     {
@@ -249,6 +260,10 @@ void refreshTetris(int c)
 
 void keyboardSpecial(int key,int x,int y)
 {
+    if (key == GLUT_KEY_F1)
+        printf("123");
+    else if (isLose)
+      return;
     switch (key)
     {
         case GLUT_KEY_LEFT:
@@ -336,6 +351,8 @@ void keyboardSpecial(int key,int x,int y)
 
 void keyboardControl(unsigned char key,int x,int y)
 {
+    if (isLose)
+        return;
     switch (key)
     {
 		case 27:
