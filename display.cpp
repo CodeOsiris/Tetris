@@ -129,6 +129,16 @@ void drawPoint()
             }
         }
     }
+    for (list<Point>::iterator p = (current_block.points).begin();p != (current_block.points).end();p++)
+    {
+        int distance = current_block.toBottom();
+        double x = p->column * BLOCK_SIZE, y = (p->row - distance)* BLOCK_SIZE, z = p->depth * BLOCK_SIZE;
+        glPushMatrix();
+            glTranslatef(x,y,z);
+            glColor4f(1.0f,0.0f,0.0f,0.3f);
+            glutSolidCube(BLOCK_SIZE);
+        glPopMatrix();
+    }
 }
 
 void drawContainer()

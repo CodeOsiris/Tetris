@@ -64,6 +64,7 @@ public:
     float center_row();
     float center_column();
     float center_depth();
+    int toBottom();
 };
 
 class S_Block: public Block

@@ -358,3 +358,18 @@ float Block::center_depth()
 {
     return ((this->points).begin())->depth + fix_depth;
 }
+
+int Block::toBottom()
+{
+    int count = 0;
+    list<Point>::iterator p;
+    while (true)
+    {
+        for (p = (this->points).begin();p != (this->points).end();p++)
+        {
+            if (block_map[p->row - (count + 1)][p->column][p->depth].isOccupy)
+                return count;
+        }
+        count++;
+    }
+}
