@@ -220,6 +220,7 @@ bool Block::isBack()
 
 void Block::rotate_x()
 {
+    Block tmp = *this;
     list<Point>::iterator p = (this->points).begin();
 //    float base_row = this->center_row();
 //    float base_depth = this->center_depth();
@@ -237,7 +238,7 @@ void Block::rotate_x()
     if (this->fix_row * this->fix_depth > 0)
         this->fix_depth = -this->fix_depth;
     else this->fix_row = -this->fix_row;
-    while (this->isLeft())
+/*    while (this->isLeft())
         this->right();
     while (this->isRight())
         this->left();
@@ -247,6 +248,9 @@ void Block::rotate_x()
         this->back();
     while (this->isTop())
         this->down();
+*/
+    if (this->isLeft() || this->isRight() || this->isFront() || this->isBack())
+        *this = tmp;
 }
 
 void Block::rotate_y()
