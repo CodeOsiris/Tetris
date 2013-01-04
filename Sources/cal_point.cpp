@@ -306,8 +306,10 @@ void Block::rotate_z()
 {
     Block tmp = *this;
     list<Point>::iterator p = (this->points).begin();
-    float base_row = this->center_row();
-    float base_column = this->center_column();
+//    float base_row = this->center_row();
+//    float base_column = this->center_column();
+    float base_row = ((this->points).begin())->row;
+    float base_column = ((this->points).begin())->column;
     int tmpr,tmpc;
     while (p != (this->points).end())
     {
