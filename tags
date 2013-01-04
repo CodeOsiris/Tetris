@@ -1,0 +1,243 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BACK_BORDER	Headers/settings.h	/^const float BACK_BORDER = -1.0f + BLOCK_SIZE * 3 \/ 2;$/;"	v
+BLOCK_NUM	Headers/settings.h	/^const int BLOCK_NUM = 4;$/;"	v
+BLOCK_SIZE	Headers/settings.h	/^const float BLOCK_SIZE = 0.12f;$/;"	v
+BOTTOM_BORDER	Headers/settings.h	/^const float BOTTOM_BORDER = -1.0f + BLOCK_SIZE * 3 \/ 2;$/;"	v
+BOTTOM_NEXT	Headers/settings.h	/^const float BOTTOM_NEXT = 0.55f + BLOCK_SIZE \/ 2;$/;"	v
+Block	Headers/components.h	/^    Block(int br = 0,int bc = 0,int bd = 0) : base_row(br),base_column(bc),base_depth(bd)$/;"	f	class:Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+Block	Headers/components.h	/^class Block$/;"	c
+Block::Block	Headers/components.h	/^    Block(int br = 0,int bc = 0,int bd = 0) : base_row(br),base_column(bc),base_depth(bd)$/;"	f	class:Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+Block::back	Headers/components.h	/^    void back();$/;"	p	class:Block	access:public	signature:()
+Block::back	Sources/cal_point.cpp	/^void Block::back()$/;"	f	class:Block	signature:()
+Block::base_column	Headers/components.h	/^    int base_column;$/;"	m	class:Block	access:public
+Block::base_depth	Headers/components.h	/^    int base_depth;$/;"	m	class:Block	access:public
+Block::base_row	Headers/components.h	/^    int base_row;$/;"	m	class:Block	access:public
+Block::center_column	Headers/components.h	/^    float center_column();$/;"	p	class:Block	access:public	signature:()
+Block::center_column	Sources/cal_point.cpp	/^float Block::center_column()$/;"	f	class:Block	signature:()
+Block::center_depth	Headers/components.h	/^    float center_depth();$/;"	p	class:Block	access:public	signature:()
+Block::center_depth	Sources/cal_point.cpp	/^float Block::center_depth()$/;"	f	class:Block	signature:()
+Block::center_row	Headers/components.h	/^    float center_row();$/;"	p	class:Block	access:public	signature:()
+Block::center_row	Sources/cal_point.cpp	/^float Block::center_row()$/;"	f	class:Block	signature:()
+Block::clear	Headers/components.h	/^    void clear();$/;"	p	class:Block	access:public	signature:()
+Block::clear	Sources/cal_point.cpp	/^void Block::clear()$/;"	f	class:Block	signature:()
+Block::color	Headers/components.h	/^    float color[3];$/;"	m	class:Block	access:public
+Block::down	Headers/components.h	/^    void down();$/;"	p	class:Block	access:public	signature:()
+Block::down	Sources/cal_point.cpp	/^void Block::down()$/;"	f	class:Block	signature:()
+Block::drop	Headers/components.h	/^    void drop();$/;"	p	class:Block	access:public	signature:()
+Block::drop	Sources/cal_point.cpp	/^void Block::drop()$/;"	f	class:Block	signature:()
+Block::fix_column	Headers/components.h	/^    float fix_column;$/;"	m	class:Block	access:public
+Block::fix_depth	Headers/components.h	/^    float fix_depth;$/;"	m	class:Block	access:public
+Block::fix_row	Headers/components.h	/^    float fix_row;$/;"	m	class:Block	access:public
+Block::forth	Headers/components.h	/^    void forth();$/;"	p	class:Block	access:public	signature:()
+Block::forth	Sources/cal_point.cpp	/^void Block::forth()$/;"	f	class:Block	signature:()
+Block::index	Headers/components.h	/^    static int index;$/;"	m	class:Block	access:public
+Block::index	Sources/cal_point.cpp	/^int Block::index = 0;$/;"	m	class:Block	file:
+Block::isBack	Headers/components.h	/^    bool isBack();$/;"	p	class:Block	access:public	signature:()
+Block::isBack	Sources/cal_point.cpp	/^bool Block::isBack()$/;"	f	class:Block	signature:()
+Block::isBottom	Headers/components.h	/^    bool isBottom();$/;"	p	class:Block	access:public	signature:()
+Block::isBottom	Sources/cal_point.cpp	/^bool Block::isBottom()$/;"	f	class:Block	signature:()
+Block::isFront	Headers/components.h	/^    bool isFront();$/;"	p	class:Block	access:public	signature:()
+Block::isFront	Sources/cal_point.cpp	/^bool Block::isFront()$/;"	f	class:Block	signature:()
+Block::isLeft	Headers/components.h	/^    bool isLeft();$/;"	p	class:Block	access:public	signature:()
+Block::isLeft	Sources/cal_point.cpp	/^bool Block::isLeft()$/;"	f	class:Block	signature:()
+Block::isRight	Headers/components.h	/^    bool isRight();$/;"	p	class:Block	access:public	signature:()
+Block::isRight	Sources/cal_point.cpp	/^bool Block::isRight()$/;"	f	class:Block	signature:()
+Block::isStop	Headers/components.h	/^    bool isStop;$/;"	m	class:Block	access:public
+Block::isTop	Headers/components.h	/^    bool isTop();$/;"	p	class:Block	access:public	signature:()
+Block::isTop	Sources/cal_point.cpp	/^bool Block::isTop()$/;"	f	class:Block	signature:()
+Block::left	Headers/components.h	/^    void left();$/;"	p	class:Block	access:public	signature:()
+Block::left	Sources/cal_point.cpp	/^void Block::left()$/;"	f	class:Block	signature:()
+Block::occupy	Headers/components.h	/^    void occupy();$/;"	p	class:Block	access:public	signature:()
+Block::occupy	Sources/cal_point.cpp	/^void Block::occupy()$/;"	f	class:Block	signature:()
+Block::points	Headers/components.h	/^    list<Point> points;$/;"	m	class:Block	access:public
+Block::right	Headers/components.h	/^    void right();$/;"	p	class:Block	access:public	signature:()
+Block::right	Sources/cal_point.cpp	/^void Block::right()$/;"	f	class:Block	signature:()
+Block::rotate_x	Headers/components.h	/^    void rotate_x();$/;"	p	class:Block	access:public	signature:()
+Block::rotate_x	Sources/cal_point.cpp	/^void Block::rotate_x()$/;"	f	class:Block	signature:()
+Block::rotate_y	Headers/components.h	/^    void rotate_y();$/;"	p	class:Block	access:public	signature:()
+Block::rotate_y	Sources/cal_point.cpp	/^void Block::rotate_y()$/;"	f	class:Block	signature:()
+Block::rotate_z	Headers/components.h	/^    void rotate_z();$/;"	p	class:Block	access:public	signature:()
+Block::rotate_z	Sources/cal_point.cpp	/^void Block::rotate_z()$/;"	f	class:Block	signature:()
+Block::type	Headers/components.h	/^    char type;$/;"	m	class:Block	access:public
+COLUMN	Headers/settings.h	/^const int COLUMN = (int)((RIGHT_BORDER - LEFT_BORDER) \/ BLOCK_SIZE);$/;"	v
+COMPONENTS_H_INCLUDED	Headers/components.h	2;"	d
+DELAY	display.cpp	14;"	d	file:
+DELAY	display.cpp	4;"	d	file:
+DELAY	display.cpp	9;"	d	file:
+DEPTH	Headers/settings.h	/^const int DEPTH = (int)((FRONT_BORDER - BACK_BORDER) \/ BLOCK_SIZE);$/;"	v
+FRONT_BORDER	Headers/settings.h	/^const float FRONT_BORDER = 0.0f - BLOCK_SIZE \/ 2;$/;"	v
+GLUT_DISABLE_ATEXIT_HACK	display.cpp	3;"	d	file:
+I_Block	Headers/components.h	/^    I_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:I_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+I_Block	Headers/components.h	/^class I_Block: public Block$/;"	c	inherits:Block
+I_Block::I_Block	Headers/components.h	/^    I_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:I_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+J_Block	Headers/components.h	/^    J_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:J_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+J_Block	Headers/components.h	/^class J_Block: public Block$/;"	c	inherits:Block
+J_Block::J_Block	Headers/components.h	/^    J_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:J_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+LEFT_BORDER	Headers/settings.h	/^const float LEFT_BORDER = -1.0f + BLOCK_SIZE * 3 \/ 2;$/;"	v
+LEFT_NEXT	Headers/settings.h	/^const float LEFT_NEXT = 0.55f + BLOCK_SIZE \/ 2;$/;"	v
+L_Block	Headers/components.h	/^    L_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:L_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+L_Block	Headers/components.h	/^class L_Block: public Block$/;"	c	inherits:Block
+L_Block::L_Block	Headers/components.h	/^    L_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:L_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+NEXT_COLUMN	Headers/settings.h	/^const int NEXT_COLUMN = (int)((RIGHT_BORDER - LEFT_BORDER) \/ BLOCK_SIZE \/ 2 - 1);$/;"	v
+NEXT_DEPTH	Headers/settings.h	/^const int NEXT_DEPTH = (int)((FRONT_BORDER - BACK_BORDER) \/ BLOCK_SIZE \/ 2 - 2);$/;"	v
+NEXT_ROW	Headers/settings.h	/^const int NEXT_ROW = (int)((TOP_NEXT - BOTTOM_NEXT) \/ BLOCK_SIZE - 1);$/;"	v
+O_Block	Headers/components.h	/^    O_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:O_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+O_Block	Headers/components.h	/^class O_Block: public Block$/;"	c	inherits:Block
+O_Block::O_Block	Headers/components.h	/^    O_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:O_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+Point	Headers/components.h	/^    Point(int p = 0,int r = 0,int c = 0,int d = 0,bool o = false) : parent(p),row(r),column(c),depth(d),x(c),y(r),z(d),isOccupy(o){}$/;"	f	struct:Point	access:public	signature:(int p = 0,int r = 0,int c = 0,int d = 0,bool o = false)
+Point	Headers/components.h	/^struct Point$/;"	s
+Point::Point	Headers/components.h	/^    Point(int p = 0,int r = 0,int c = 0,int d = 0,bool o = false) : parent(p),row(r),column(c),depth(d),x(c),y(r),z(d),isOccupy(o){}$/;"	f	struct:Point	access:public	signature:(int p = 0,int r = 0,int c = 0,int d = 0,bool o = false)
+Point::color	Headers/components.h	/^    float color[3];$/;"	m	struct:Point	access:public
+Point::column	Headers/components.h	/^    int column;$/;"	m	struct:Point	access:public
+Point::depth	Headers/components.h	/^    int depth;$/;"	m	struct:Point	access:public
+Point::isOccupy	Headers/components.h	/^    bool isOccupy;$/;"	m	struct:Point	access:public
+Point::parent	Headers/components.h	/^    int parent;$/;"	m	struct:Point	access:public
+Point::row	Headers/components.h	/^    int row;$/;"	m	struct:Point	access:public
+Point::x	Headers/components.h	/^    int x;$/;"	m	struct:Point	access:public
+Point::y	Headers/components.h	/^    int y;$/;"	m	struct:Point	access:public
+Point::z	Headers/components.h	/^    int z;$/;"	m	struct:Point	access:public
+QTWidget	Headers/implements.h	/^    QTWidget(QWidget* parent = 0,const char* name = 0,bool fs = false);$/;"	p	class:QTWidget	access:public	signature:(QWidget* parent = 0,const char* name = 0,bool fs = false)
+QTWidget	Headers/implements.h	/^class QTWidget : public QGLWidget$/;"	c	inherits:QGLWidget
+QTWidget::QTWidget	Headers/implements.h	/^    QTWidget(QWidget* parent = 0,const char* name = 0,bool fs = false);$/;"	p	class:QTWidget	access:public	signature:(QWidget* parent = 0,const char* name = 0,bool fs = false)
+QTWidget::fullscreen	Headers/implements.h	/^    bool fullscreen;$/;"	m	class:QTWidget	access:protected
+QTWidget::initializeGL	Headers/implements.h	/^    void initializeGL();$/;"	p	class:QTWidget	access:protected	signature:()
+QTWidget::keyPressEvent	Headers/implements.h	/^    void keyPressEvent(QKeyEvent *e);$/;"	p	class:QTWidget	access:protected	signature:(QKeyEvent *e)
+QTWidget::paintGL	Headers/implements.h	/^    void paintGL();$/;"	p	class:QTWidget	access:protected	signature:()
+QTWidget::resizeGL	Headers/implements.h	/^    void resizeGL(int width,int height);$/;"	p	class:QTWidget	access:protected	signature:(int width,int height)
+QTWidget::~QTWidget	Headers/implements.h	/^    ~QTWidget();$/;"	p	class:QTWidget	access:public	signature:()
+RIGHT_BORDER	Headers/settings.h	/^const float RIGHT_BORDER = 0.0f - BLOCK_SIZE \/ 2;$/;"	v
+RIGHT_NEXT	Headers/settings.h	/^const float RIGHT_NEXT = 0.95f - BLOCK_SIZE \/ 2;$/;"	v
+ROW	Headers/settings.h	/^const int ROW = (int)((TOP_BORDER - BOTTOM_BORDER) \/ BLOCK_SIZE);$/;"	v
+SETTINGS_H_INCLUDED	Headers/settings.h	2;"	d
+START_COLUMN	Headers/settings.h	/^const int START_COLUMN = (int)((RIGHT_BORDER - LEFT_BORDER) \/ BLOCK_SIZE \/ 2 - 1);$/;"	v
+START_DEPTH	Headers/settings.h	/^const int START_DEPTH = (int)((FRONT_BORDER - BACK_BORDER) \/ BLOCK_SIZE \/ 2 - 1);$/;"	v
+START_ROW	Headers/settings.h	/^const int START_ROW = (int)((TOP_BORDER - BOTTOM_BORDER) \/ BLOCK_SIZE - 1);$/;"	v
+S_Block	Headers/components.h	/^    S_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:S_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+S_Block	Headers/components.h	/^class S_Block: public Block$/;"	c	inherits:Block
+S_Block::S_Block	Headers/components.h	/^    S_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:S_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+TOP_BORDER	Headers/settings.h	/^const float TOP_BORDER = 1.0f - BLOCK_SIZE \/ 2;$/;"	v
+TOP_NEXT	Headers/settings.h	/^const float TOP_NEXT = 0.95f - BLOCK_SIZE \/ 2;$/;"	v
+T_Block	Headers/components.h	/^    T_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:T_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+T_Block	Headers/components.h	/^class T_Block: public Block$/;"	c	inherits:Block
+T_Block::T_Block	Headers/components.h	/^    T_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:T_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+T_Block::center_column	Headers/components.h	/^    float center_column()$/;"	f	class:T_Block	access:public	signature:()
+T_Block::center_depth	Headers/components.h	/^    float center_depth()$/;"	f	class:T_Block	access:public	signature:()
+T_Block::center_row	Headers/components.h	/^    float center_row()$/;"	f	class:T_Block	access:public	signature:()
+Z_Block	Headers/components.h	/^    Z_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:Z_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+Z_Block	Headers/components.h	/^class Z_Block: public Block$/;"	c	inherits:Block
+Z_Block::Z_Block	Headers/components.h	/^    Z_Block(int br = 0,int bc = 0,int bd = 0) : Block(br,bc,bd)$/;"	f	class:Z_Block	access:public	signature:(int br = 0,int bc = 0,int bd = 0)
+anglex	display.cpp	/^double anglex = 0.0;$/;"	v
+back	Headers/components.h	/^    void back();$/;"	p	class:Block	access:public	signature:()
+back	Sources/cal_point.cpp	/^void Block::back()$/;"	f	class:Block	signature:()
+base_column	Headers/components.h	/^    int base_column;$/;"	m	class:Block	access:public
+base_depth	Headers/components.h	/^    int base_depth;$/;"	m	class:Block	access:public
+base_row	Headers/components.h	/^    int base_row;$/;"	m	class:Block	access:public
+block_map	display.cpp	/^Point block_map[ROW + 2][COLUMN + 2][DEPTH + 2];$/;"	v
+center_column	Headers/components.h	/^    float center_column()$/;"	f	class:T_Block	access:public	signature:()
+center_column	Headers/components.h	/^    float center_column();$/;"	p	class:Block	access:public	signature:()
+center_column	Sources/cal_point.cpp	/^float Block::center_column()$/;"	f	class:Block	signature:()
+center_depth	Headers/components.h	/^    float center_depth()$/;"	f	class:T_Block	access:public	signature:()
+center_depth	Headers/components.h	/^    float center_depth();$/;"	p	class:Block	access:public	signature:()
+center_depth	Sources/cal_point.cpp	/^float Block::center_depth()$/;"	f	class:Block	signature:()
+center_row	Headers/components.h	/^    float center_row()$/;"	f	class:T_Block	access:public	signature:()
+center_row	Headers/components.h	/^    float center_row();$/;"	p	class:Block	access:public	signature:()
+center_row	Sources/cal_point.cpp	/^float Block::center_row()$/;"	f	class:Block	signature:()
+centerx	display.cpp	/^float eyex = 2.0 * sin(anglex), eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;$/;"	v
+centery	display.cpp	/^float eyex = 2.0 * sin(anglex), eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;$/;"	v
+centerz	display.cpp	/^float eyex = 2.0 * sin(anglex), eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;$/;"	v
+clear	Headers/components.h	/^    void clear();$/;"	p	class:Block	access:public	signature:()
+clear	Sources/cal_point.cpp	/^void Block::clear()$/;"	f	class:Block	signature:()
+clock_switch	display.cpp	/^int clock_switch = 1;$/;"	v
+color	Headers/components.h	/^    float color[3];$/;"	m	class:Block	access:public
+color	Headers/components.h	/^    float color[3];$/;"	m	struct:Point	access:public
+column	Headers/components.h	/^    int column;$/;"	m	struct:Point	access:public
+current	display.cpp	/^clock_t previous,current;$/;"	v
+current_block	display.cpp	/^Block current_block,next_block;$/;"	v
+depth	Headers/components.h	/^    int depth;$/;"	m	struct:Point	access:public
+down	Headers/components.h	/^    void down();$/;"	p	class:Block	access:public	signature:()
+down	Sources/cal_point.cpp	/^void Block::down()$/;"	f	class:Block	signature:()
+drawBlock	Headers/implements.h	/^void drawBlock();$/;"	p	signature:()
+drawBlock	display.cpp	/^void drawBlock(Block block){$/;"	f	signature:(Block block)
+drawContainer	Headers/implements.h	/^void drawContainer();$/;"	p	signature:()
+drawContainer	display.cpp	/^void drawContainer()$/;"	f	signature:()
+drawPoint	Headers/implements.h	/^void drawPoint();$/;"	p	signature:()
+drawPoint	display.cpp	/^void drawPoint()$/;"	f	signature:()
+drawTetris	display.cpp	/^void drawTetris()$/;"	f	signature:()
+drop	Headers/components.h	/^    void drop();$/;"	p	class:Block	access:public	signature:()
+drop	Sources/cal_point.cpp	/^void Block::drop()$/;"	f	class:Block	signature:()
+dropspeed	display.cpp	/^int dropspeed = 100;$/;"	v
+erase_row	Sources/cal_point.cpp	/^void erase_row(int row)$/;"	f	signature:(int row)
+eyex	display.cpp	/^float eyex = 2.0 * sin(anglex), eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;$/;"	v
+eyey	display.cpp	/^float eyex = 2.0 * sin(anglex), eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;$/;"	v
+eyez	display.cpp	/^float eyex = 2.0 * sin(anglex), eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;$/;"	v
+fix_column	Headers/components.h	/^    float fix_column;$/;"	m	class:Block	access:public
+fix_depth	Headers/components.h	/^    float fix_depth;$/;"	m	class:Block	access:public
+fix_row	Headers/components.h	/^    float fix_row;$/;"	m	class:Block	access:public
+forth	Headers/components.h	/^    void forth();$/;"	p	class:Block	access:public	signature:()
+forth	Sources/cal_point.cpp	/^void Block::forth()$/;"	f	class:Block	signature:()
+fullscreen	Headers/implements.h	/^    bool fullscreen;$/;"	m	class:QTWidget	access:protected
+getNextBlock	Headers/implements.h	/^void getNextBlock();$/;"	p	signature:()
+getNextBlock	display.cpp	/^void getNextBlock()$/;"	f	signature:()
+index	Headers/components.h	/^    static int index;$/;"	m	class:Block	access:public
+index	Sources/cal_point.cpp	/^int Block::index = 0;$/;"	m	class:Block	file:
+init	display.cpp	/^void init()$/;"	f	signature:()
+initializeGL	Headers/implements.h	/^    void initializeGL();$/;"	p	class:QTWidget	access:protected	signature:()
+isBack	Headers/components.h	/^    bool isBack();$/;"	p	class:Block	access:public	signature:()
+isBack	Sources/cal_point.cpp	/^bool Block::isBack()$/;"	f	class:Block	signature:()
+isBottom	Headers/components.h	/^    bool isBottom();$/;"	p	class:Block	access:public	signature:()
+isBottom	Sources/cal_point.cpp	/^bool Block::isBottom()$/;"	f	class:Block	signature:()
+isFront	Headers/components.h	/^    bool isFront();$/;"	p	class:Block	access:public	signature:()
+isFront	Sources/cal_point.cpp	/^bool Block::isFront()$/;"	f	class:Block	signature:()
+isLeft	Headers/components.h	/^    bool isLeft();$/;"	p	class:Block	access:public	signature:()
+isLeft	Sources/cal_point.cpp	/^bool Block::isLeft()$/;"	f	class:Block	signature:()
+isNext	display.cpp	/^bool isNext = false;$/;"	v
+isOccupy	Headers/components.h	/^    bool isOccupy;$/;"	m	struct:Point	access:public
+isRight	Headers/components.h	/^    bool isRight();$/;"	p	class:Block	access:public	signature:()
+isRight	Sources/cal_point.cpp	/^bool Block::isRight()$/;"	f	class:Block	signature:()
+isStop	Headers/components.h	/^    bool isStop;$/;"	m	class:Block	access:public
+isTop	Headers/components.h	/^    bool isTop();$/;"	p	class:Block	access:public	signature:()
+isTop	Sources/cal_point.cpp	/^bool Block::isTop()$/;"	f	class:Block	signature:()
+judge_row	Sources/cal_point.cpp	/^bool judge_row(){$/;"	f	signature:()
+keyPressEvent	Headers/implements.h	/^    void keyPressEvent(QKeyEvent *e);$/;"	p	class:QTWidget	access:protected	signature:(QKeyEvent *e)
+keyboardControl	display.cpp	/^void keyboardControl(unsigned char key,int x,int y)$/;"	f	signature:(unsigned char key,int x,int y)
+keyboardSpecial	display.cpp	/^void keyboardSpecial(int key,int x,int y)$/;"	f	signature:(int key,int x,int y)
+left	Headers/components.h	/^    void left();$/;"	p	class:Block	access:public	signature:()
+left	Sources/cal_point.cpp	/^void Block::left()$/;"	f	class:Block	signature:()
+level_fill	display.cpp	/^int level_fill[ROW + 2];$/;"	v
+main	display.cpp	/^int main(int argc,char *argv[])$/;"	f	signature:(int argc,char *argv[])
+next_block	display.cpp	/^Block current_block,next_block;$/;"	v
+occupy	Headers/components.h	/^    void occupy();$/;"	p	class:Block	access:public	signature:()
+occupy	Sources/cal_point.cpp	/^void Block::occupy()$/;"	f	class:Block	signature:()
+paintGL	Headers/implements.h	/^    void paintGL();$/;"	p	class:QTWidget	access:protected	signature:()
+parent	Headers/components.h	/^    int parent;$/;"	m	struct:Point	access:public
+pi	display.cpp	/^const double pi = acos(-1);$/;"	v
+points	Headers/components.h	/^    list<Point> points;$/;"	m	class:Block	access:public
+previous	display.cpp	/^clock_t previous,current;$/;"	v
+refreshTetris	display.cpp	/^void refreshTetris(int c)$/;"	f	signature:(int c)
+reshape	display.cpp	/^void reshape(int w,int h)$/;"	f	signature:(int w,int h)
+resizeGL	Headers/implements.h	/^    void resizeGL(int width,int height);$/;"	p	class:QTWidget	access:protected	signature:(int width,int height)
+right	Headers/components.h	/^    void right();$/;"	p	class:Block	access:public	signature:()
+right	Sources/cal_point.cpp	/^void Block::right()$/;"	f	class:Block	signature:()
+rotate_x	Headers/components.h	/^    void rotate_x();$/;"	p	class:Block	access:public	signature:()
+rotate_x	Sources/cal_point.cpp	/^void Block::rotate_x()$/;"	f	class:Block	signature:()
+rotate_y	Headers/components.h	/^    void rotate_y();$/;"	p	class:Block	access:public	signature:()
+rotate_y	Sources/cal_point.cpp	/^void Block::rotate_y()$/;"	f	class:Block	signature:()
+rotate_z	Headers/components.h	/^    void rotate_z();$/;"	p	class:Block	access:public	signature:()
+rotate_z	Sources/cal_point.cpp	/^void Block::rotate_z()$/;"	f	class:Block	signature:()
+row	Headers/components.h	/^    int row;$/;"	m	struct:Point	access:public
+scr_h	display.cpp	/^int scr_h = 600;$/;"	v
+scr_w	display.cpp	/^int scr_w = 600;$/;"	v
+speed	display.cpp	/^int speed = 150000;$/;"	v
+type	Headers/components.h	/^    char type;$/;"	m	class:Block	access:public
+upx	display.cpp	/^float eyex = 2.0 * sin(anglex), eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;$/;"	v
+upy	display.cpp	/^float eyex = 2.0 * sin(anglex), eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;$/;"	v
+upz	display.cpp	/^float eyex = 2.0 * sin(anglex), eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;$/;"	v
+x	Headers/components.h	/^    int x;$/;"	m	struct:Point	access:public
+y	Headers/components.h	/^    int y;$/;"	m	struct:Point	access:public
+z	Headers/components.h	/^    int z;$/;"	m	struct:Point	access:public
+~QTWidget	Headers/implements.h	/^    ~QTWidget();$/;"	p	class:QTWidget	access:public	signature:()

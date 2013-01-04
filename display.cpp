@@ -27,9 +27,10 @@ int dropspeed = 100;
 bool isNext = false;
 int scr_w = 600;
 int scr_h = 600;
+int status = 0;
 const double pi = acos(-1);
 double anglex = 0.0;
-float eyex = 2.0 * sin(anglex), eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.3, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;
+float eyex = 2.0 * sin(anglex) - 0.44, eyey = 0.6, eyez = 2.0 * cos(anglex), centerx = -0.44, centery = -0.2, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;
 
 void getNextBlock()
 {
@@ -168,7 +169,7 @@ void drawTetris()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
-    printf("%d %d %d\n",ROW,COLUMN,DEPTH);
+    //printf("%d %d %d\n",ROW,COLUMN,DEPTH);
     //printf("%d %d %d\n",(current_block.points.begin())->row,(current_block.points.begin())->column,(current_block.points.begin())->depth);
 /*
     for (int i = ROW ;i >= 1;i--)
@@ -243,20 +244,84 @@ void keyboardSpecial(int key,int x,int y)
     switch (key)
     {
         case GLUT_KEY_LEFT:
-            if (!current_block.isLeft())
-                current_block.left();
+            switch (status){
+                case 0:
+                    if (!current_block.isLeft())
+                        current_block.left();
+                    break;
+                case 2:
+                    if (!current_block.isRight())
+                        current_block.right();
+                    break;
+                case 1:
+                    if (!current_block.isBack())
+                        current_block.back();
+                    break;
+                case 3:
+                    if (!current_block.isFront())
+                        current_block.forth();
+                    break;
+            }
             break;
         case GLUT_KEY_RIGHT:
-            if (!current_block.isRight())
-                current_block.right();
+            switch (status){
+                case 2:
+                    if (!current_block.isLeft())
+                        current_block.left();
+                    break;
+                case 0:
+                    if (!current_block.isRight())
+                        current_block.right();
+                    break;
+                case 3:
+                    if (!current_block.isBack())
+                        current_block.back();
+                    break;
+                case 1:
+                    if (!current_block.isFront())
+                        current_block.forth();
+                    break;
+            }
             break;
         case GLUT_KEY_UP:
-            if (!current_block.isBack())
-                current_block.back();
+            switch (status){
+                case 3:
+                    if (!current_block.isLeft())
+                        current_block.left();
+                    break;
+                case 1:
+                    if (!current_block.isRight())
+                        current_block.right();
+                    break;
+                case 0:
+                    if (!current_block.isBack())
+                        current_block.back();
+                    break;
+                case 2:
+                    if (!current_block.isFront())
+                        current_block.forth();
+                    break;
+            }
             break;
         case GLUT_KEY_DOWN:
-            if (!current_block.isFront())
-                current_block.forth();
+            switch (status){
+                case 1:
+                    if (!current_block.isLeft())
+                        current_block.left();
+                    break;
+                case 3:
+                    if (!current_block.isRight())
+                        current_block.right();
+                    break;
+                case 2:
+                    if (!current_block.isBack())
+                        current_block.back();
+                    break;
+                case 0:
+                    if (!current_block.isFront())
+                        current_block.forth();
+                    break;
+            }
             break;
     }
 }
@@ -272,12 +337,14 @@ void keyboardControl(unsigned char key,int x,int y)
                 current_block.drop();
             break;
         case 'a':
-            anglex -= 0.2;
-            eyex = 2.0 * sin(anglex), eyez = 2.0 * cos(anglex);
+            anglex -= pi/2;
+            eyex = 2.0 * sin(anglex) - 0.44, eyez = 2.0 * cos(anglex);
+            status = (status+1) % 4;
             break;
         case 'd':
-            anglex += 0.2;
-            eyex = 2.0 * sin(anglex), eyez = 2.0 * cos(anglex);
+            anglex += pi/2;
+            eyex = 2.0 * sin(anglex) - 0.44, eyez = 2.0 * cos(anglex);
+            status = (status-1 < 0 ? 3 : status-1) % 4;
             break;
         case 'q':
             if (!current_block.isBottom())
@@ -306,6 +373,7 @@ int main(int argc,char *argv[])
     glutInitWindowSize(scr_w,scr_h);
     glutInitWindowPosition(100,100);
     glutCreateWindow("Tetris");
+    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
     init();
     glutSpecialFunc(keyboardSpecial);
     glutKeyboardFunc(keyboardControl);
