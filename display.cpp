@@ -65,7 +65,7 @@ void getNextBlock()
 
 void init()
 {
-glShadeModel(GL_SMOOTH);
+    glShadeModel(GL_SMOOTH);
     glClearColor(0.0f,0.0f,0.0f,0.0f);
     glClearDepth(1.0f);
     glEnable(GL_DEPTH_TEST);
@@ -112,11 +112,11 @@ void drawBlock(Block block){
             glutSolidCube(BLOCK_SIZE);
         glPopMatrix();
     }
-return;
+    return;
 }
 void drawHint()
 {
-    float base_x,base_y,base_z;
+    float base_x,base_y,base_z,hint_x,hint_y,hint_z,fix_x,fix_y,fix_z;
     glPushMatrix();
         switch (status)
         {
@@ -124,21 +124,45 @@ void drawHint()
                 base_x = 0.0f;
                 base_y = -1.0f;
                 base_z = -7 * BLOCK_SIZE;
+                hint_x = -14 * BLOCK_SIZE;
+                hint_y = 0.7f;
+                hint_z = 0.0f;
+                fix_x = -0.04f;
+                fix_y = -0.15f;
+                fix_z = 0.0f;
                 break;
             case 1:
                 base_x = -7 * BLOCK_SIZE;
                 base_y = -1.0f;
                 base_z = 0.0f;
+                hint_x = 0.0f;
+                hint_y = 0.7f;
+                hint_z = -14 * BLOCK_SIZE;
+                fix_x = 0.0f;
+                fix_y = -0.15f;
+                fix_z = -0.04f;
                 break;
             case 2:
                 base_x = -14 * BLOCK_SIZE;
                 base_y = -1.0f;
                 base_z = -7 * BLOCK_SIZE;
+                hint_x = 14 * BLOCK_SIZE;
+                hint_y = 0.7f;
+                hint_z = 0.0f;
+                fix_x = 0.04f;
+                fix_y = -0.15f;
+                fix_z = 0.0f;
                 break;
             case 3:
                 base_x = -7 * BLOCK_SIZE;
                 base_y = -1.0f;
                 base_z = -14 * BLOCK_SIZE;
+                hint_x = 0.0f;
+                hint_y = 0.7f;
+                hint_z = 14 * BLOCK_SIZE;
+                fix_x = 0.0f;
+                fix_y = -0.15f;
+                fix_z = 0.04f;
                 break;
         }
         glTranslatef(base_x,base_y,base_z);
@@ -160,9 +184,16 @@ void drawHint()
     glPopMatrix();
     for (int i = 0;i < 12;i++)
     {
-        glRasterPos3f(base_x - 2.55f - 0.04f * i,eyey - 0.15f * i,base_z);
+        glRasterPos3f(centerx + hint_x + fix_x * i,centery + hint_y + fix_y * i,centerz + hint_z + fix_z * i);
         for (int j = 0;j < help[i].length();j++)
             glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18,help[i][j]);
+    }
+    if (!isStart)
+    {
+        string pause = "Paused";
+        glRasterPos3f(centerx,centery + 0.9f,centerz);
+        for (int i = 0;i < pause.length();i++)
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,pause[i]);
     }
 }
 
@@ -253,7 +284,7 @@ void drawContainer()
 
 void handle_lose(){
     string str = "You Lose! Press Enter to restart";
-    glRasterPos3f(-0.5f,-1.0f,0.0f);
+    glRasterPos3f(centerx,centery - 1.2f,centerz);
     for (int i = 0;i < str.length();i++)
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
 }
