@@ -22,16 +22,17 @@ int level_fill[ROW + 2];
 //View Parameters
 clock_t previous,current;
 int clock_switch = 1;
-int speed = 150000;
+int speed = 200000;
 int dropspeed = 100;
+bool isStart = true;
 bool isNext = false;
 bool isLose = false;
-int scr_w = 600;
+int scr_w = 1000;
 int scr_h = 600;
 int status = 0;
 const double pi = acos(-1);
 double anglex = 0.0;
-float eyex = 2.0 * sin(anglex) - 0.44, eyey = 0.6, eyez = 2.0 * cos(anglex) - 0.44, centerx = -0.44, centery = -0.2, centerz = -0.44, upx = 0.0, upy = 1.0, upz = 0.0;
+float eyex = 2.0 * sin(anglex) + CENTER_X, eyey = 0.6, eyez = 2.0 * cos(anglex) + CENTER_Z, centerx = CENTER_X, centery = CENTER_Y, centerz = CENTER_Z, upx = 0.0, upy = 1.0, upz = 0.0;
 
 void getNextBlock()
 {
@@ -64,21 +65,22 @@ void getNextBlock()
 
 void init()
 {
-	glShadeModel(GL_SMOOTH);
+glShadeModel(GL_SMOOTH);
     glClearColor(0.0f,0.0f,0.0f,0.0f);
-	glClearDepth(1.0f);
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LEQUAL);
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
+    glClearDepth(1.0f);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    isStart = true;
     isNext = false;
     isLose = false;
     status = 0;
     anglex = 0.0;
-    eyex = 2.0 * sin(anglex) - 0.44;
+    eyex = 2.0 * sin(anglex) + CENTER_X;
     eyey = 0.6;
-    eyez = 2.0 * cos(anglex) - 0.44;
+    eyez = 2.0 * cos(anglex) + CENTER_Z;
     for (int i = 0;i <= ROW + 1;i++)
     {
         for (int j = 0;j <= COLUMN + 1;j++)
@@ -110,7 +112,58 @@ void drawBlock(Block block){
             glutSolidCube(BLOCK_SIZE);
         glPopMatrix();
     }
-	return;
+return;
+}
+void drawHint()
+{
+    float base_x,base_y,base_z;
+    glPushMatrix();
+        switch (status)
+        {
+            case 0:
+                base_x = 0.0f;
+                base_y = -1.0f;
+                base_z = -7 * BLOCK_SIZE;
+                break;
+            case 1:
+                base_x = -7 * BLOCK_SIZE;
+                base_y = -1.0f;
+                base_z = 0.0f;
+                break;
+            case 2:
+                base_x = -14 * BLOCK_SIZE;
+                base_y = -1.0f;
+                base_z = -7 * BLOCK_SIZE;
+                break;
+            case 3:
+                base_x = -7 * BLOCK_SIZE;
+                base_y = -1.0f;
+                base_z = -14 * BLOCK_SIZE;
+                break;
+        }
+        glTranslatef(base_x,base_y,base_z);
+        drawBlock(next_block);
+        string help[12] = {
+            "Enter: Restart",
+            "Arrow Keys: Move blocks",
+            "Q: Rotate blocks on axis-x",
+            "W: Rotate blocks on axis-y",
+            "E: Rotate blocks on axis-z",
+            "S: Speed blocks",
+            "Space: Drop blocks",
+            "A: Rotate horizontally(clockwise)",
+            "D: Rotate horizontally(counterclockwise)",
+            "F: Rotate vertically(clockwise)",
+            "R: Rotate vertically(counterclockwise)",
+            "P: Pause"
+        };
+    glPopMatrix();
+    for (int i = 0;i < 12;i++)
+    {
+        glRasterPos3f(base_x - 2.55f - 0.04f * i,eyey - 0.15f * i,base_z);
+        for (int j = 0;j < help[i].length();j++)
+            glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18,help[i][j]);
+    }
 }
 
 void drawPoint()
@@ -152,7 +205,7 @@ void drawPoint()
 void drawContainer()
 {
     glColor3f(1.0f,1.0f,1.0f);
-/*    glBegin(GL_LINES);
+    glBegin(GL_LINES);
         glVertex3f(LEFT_BORDER,TOP_BORDER,FRONT_BORDER);
         glVertex3f(LEFT_BORDER,BOTTOM_BORDER,FRONT_BORDER);
     glEnd();
@@ -167,12 +220,18 @@ void drawContainer()
     glBegin(GL_LINES);
         glVertex3f(RIGHT_BORDER,TOP_BORDER,BACK_BORDER);
         glVertex3f(RIGHT_BORDER,BOTTOM_BORDER,BACK_BORDER);
-    glEnd();*/
+    glEnd();
     glBegin(GL_LINE_LOOP);
         glVertex3f(LEFT_BORDER,BOTTOM_BORDER,FRONT_BORDER);
         glVertex3f(RIGHT_BORDER,BOTTOM_BORDER,FRONT_BORDER);
         glVertex3f(RIGHT_BORDER,BOTTOM_BORDER,BACK_BORDER);
         glVertex3f(LEFT_BORDER,BOTTOM_BORDER,BACK_BORDER);
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+        glVertex3f(LEFT_BORDER,TOP_BORDER,FRONT_BORDER);
+        glVertex3f(RIGHT_BORDER,TOP_BORDER,FRONT_BORDER);
+        glVertex3f(RIGHT_BORDER,TOP_BORDER,BACK_BORDER);
+        glVertex3f(LEFT_BORDER,TOP_BORDER,BACK_BORDER);
     glEnd();
 
     glColor3f(0.4f,0.4f,0.4f);
@@ -193,29 +252,10 @@ void drawContainer()
 }
 
 void handle_lose(){
-    string str = "You Lose! Press P to restart";
-    switch (status){
-        case 0:
-            glRasterPos3f( -0.0f, 0.0f,1.0f);
-            for (int i = 0;i < str.length();i++)
-                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
-            break;
-        case 1:
-            glRasterPos3f( 1.0f, -0.5f,-0.2f);
-            for (int i = 0;i < str.length();i++)
-                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
-            break;
-        case 2:
-            glRasterPos3f( 0.8f, 0.5f,-0.6f);
-            for (int i = 0;i < str.length();i++)
-                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
-            break;
-        case 3:
-            glRasterPos3f( 1.0f, 0.0f,0.9f);
-            for (int i = 0;i < str.length();i++)
-                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
-            break;
-    }
+    string str = "You Lose! Press Enter to restart";
+    glRasterPos3f(-0.5f,-1.0f,0.0f);
+    for (int i = 0;i < str.length();i++)
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
 }
 
 void drawTetris()
@@ -260,11 +300,7 @@ void drawTetris()
         drawPoint();
     glPopMatrix();
 
-/*    glPushMatrix();
-        glTranslatef(BLOCK_SIZE + 0.0f,BLOCK_SIZE - 1.05f,-1.0f);
-        drawBlock(next_block);
-    glPopMatrix();
-*/
+    drawHint();
 
     glFlush();
     glutSwapBuffers();
@@ -279,23 +315,26 @@ void reshape(int w,int h)
 
 void refreshTetris(int c)
 {
-    current = clock();
-    if (current - previous >= (speed * (clock_switch % 10) + dropspeed * (clock_switch / 10) / 1000))
+    if (isStart)
     {
-        if (!current_block.isBottom())
+        current = clock();
+        if (current - previous >= (speed * (clock_switch % 10) + dropspeed * (clock_switch / 10) / 1000))
         {
-            isNext = false;
-            current_block.down();
-        }
-        previous = clock();
-        clock_switch = 1;
-        if (isNext)
-        {
-            current_block.occupy();
-            current_block.isStop = true;
-            current_block = next_block;
-            getNextBlock();
-            isNext = false;
+            if (!current_block.isBottom())
+            {
+                isNext = false;
+                current_block.down();
+            }
+            previous = clock();
+            clock_switch = 1;
+            if (isNext)
+            {
+                current_block.occupy();
+                current_block.isStop = true;
+                current_block = next_block;
+                getNextBlock();
+                isNext = false;
+            }
         }
     }
 
@@ -307,6 +346,10 @@ void setKeyRepeat(unsigned char key, int x, int y){
     glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 }
 
+void setSpecialKeyRepeat(int key, int x, int y){
+    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
+}
+
 void keyboardSpecial(int key,int x,int y)
 {
     if (isLose)
@@ -314,6 +357,7 @@ void keyboardSpecial(int key,int x,int y)
     switch (key)
     {
         case GLUT_KEY_LEFT:
+            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){
                 case 0:
                     if (!current_block.isLeft())
@@ -334,6 +378,7 @@ void keyboardSpecial(int key,int x,int y)
             }
             break;
         case GLUT_KEY_RIGHT:
+            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){
                 case 2:
                     if (!current_block.isLeft())
@@ -354,6 +399,7 @@ void keyboardSpecial(int key,int x,int y)
             }
             break;
         case GLUT_KEY_UP:
+            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){
                 case 3:
                     if (!current_block.isLeft())
@@ -374,6 +420,7 @@ void keyboardSpecial(int key,int x,int y)
             }
             break;
         case GLUT_KEY_DOWN:
+            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){
                 case 1:
                     if (!current_block.isLeft())
@@ -398,7 +445,7 @@ void keyboardSpecial(int key,int x,int y)
 
 void keyboardControl(unsigned char key,int x,int y)
 {
-    if (key == 'p')
+    if (key == 13)
         init();
     else if (key == 27)
         exit(0);
@@ -409,41 +456,59 @@ void keyboardControl(unsigned char key,int x,int y)
         case 32:
             if (!current_block.isBottom())
                 current_block.drop();
+            current_block.occupy();
+            current_block.isStop = true;
+            current_block = next_block;
+            getNextBlock();
+            isNext = false;
             break;
+        case 'A':
         case 'a':
-            anglex -= pi/2;
-            eyex = 2.0 * sin(anglex) - 0.44, eyez = 2.0 * cos(anglex) - 0.44;
+            anglex -= pi / 2;
+            eyex = 2.0 * sin(anglex) + CENTER_X, eyez = 2.0 * cos(anglex) + CENTER_Z;
             status = (status + 1) % 4;
             break;
+        case 'D':
         case 'd':
-            anglex += pi/2;
-            eyex = 2.0 * sin(anglex) - 0.44, eyez = 2.0 * cos(anglex) - 0.44;
+            anglex += pi / 2;
+            eyex = 2.0 * sin(anglex) + CENTER_X, eyez = 2.0 * cos(anglex) + CENTER_Z;
             status = (status + 3) % 4;
             break;
+        case 'Q':
         case 'q':
             if (!current_block.isBottom())
                 current_block.rotate_x();
             break;
+        case 'W':
         case 'w':
             if (!current_block.isBottom())
                 current_block.rotate_y();
             break;
+        case 'E':
         case 'e':
             if (!current_block.isBottom())
                 current_block.rotate_z();
             break;
+        case 'S':
         case 's':
+            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             clock_switch = 10;
             break;
+        case 'R':
         case 'r':
             glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             if (eyey < 2.0)
-                eyey += 0.1;
+                eyey += 0.2;
             break;
+        case 'F':
         case 'f':
             glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             if (eyey > -0.4)
-                eyey -= 0.1;
+                eyey -= 0.2;
+            break;
+        case 'P':
+        case 'p':
+            isStart = !isStart;
             break;
         default:
             break;
@@ -462,6 +527,7 @@ int main(int argc,char *argv[])
     glutSpecialFunc(keyboardSpecial);
     glutKeyboardFunc(keyboardControl);
     glutKeyboardUpFunc(setKeyRepeat);
+    glutSpecialUpFunc(setSpecialKeyRepeat);
     glutDisplayFunc(drawTetris);
     refreshTetris(0);
     glutMainLoop();

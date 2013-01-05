@@ -33,12 +33,15 @@ const float LEFT_BORDER = -13 * BLOCK_SIZE / 2;
 const float RIGHT_BORDER = 1 * BLOCK_SIZE / 2;
 const float FRONT_BORDER = 1 * BLOCK_SIZE / 2;
 const float BACK_BORDER = -13 * BLOCK_SIZE / 2;
-const int START_ROW = (int)((TOP_BORDER - BOTTOM_BORDER) / BLOCK_SIZE - 1);
+const int START_ROW = (int)((TOP_BORDER - BOTTOM_BORDER) / BLOCK_SIZE);
 const int START_COLUMN = (int)((RIGHT_BORDER - LEFT_BORDER) / BLOCK_SIZE / 2 + 1);
 const int START_DEPTH = (int)((FRONT_BORDER - BACK_BORDER) / BLOCK_SIZE / 2 + 1);
 const int ROW = (int)((TOP_BORDER - BOTTOM_BORDER) / BLOCK_SIZE);
 const int COLUMN = (int)((RIGHT_BORDER - LEFT_BORDER) / BLOCK_SIZE);
 const int DEPTH = (int)((FRONT_BORDER - BACK_BORDER) / BLOCK_SIZE);
+const float CENTER_X = (LEFT_BORDER + RIGHT_BORDER) / 2;
+const float CENTER_Y = (BOTTOM_BORDER + TOP_BORDER) / 2;
+const float CENTER_Z = (FRONT_BORDER + BACK_BORDER) / 2;
 
 //Basic Parameters
 extern int level_fill[ROW + 2];
