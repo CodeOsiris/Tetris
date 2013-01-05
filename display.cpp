@@ -72,6 +72,13 @@ void init()
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    isNext = false;
+    isLose = false;
+    status = 0;
+    anglex = 0.0;
+    eyex = 2.0 * sin(anglex) - 0.44;
+    eyey = 0.6;
+    eyez = 2.0 * cos(anglex) - 0.44;
     for (int i = 0;i <= ROW + 1;i++)
     {
         for (int j = 0;j <= COLUMN + 1;j++)
@@ -108,10 +115,10 @@ void drawBlock(Block block){
 
 void drawPoint()
 {
-    float color[4][3] = {0.0f,1.0f,0.0f,
-                         1.0f,1.0f,0.0f,
+    float color[4][3] = {0.7f,0.0f,0.0f,
                          1.0f,0.5f,0.0f,
-                         1.0f,0.0f,1.0f};
+                         1.0f,1.0f,0.0f,
+                         0.0f,1.0f,0.0f};
     for (int i = 1;i <= ROW;i++)
     {
         for (int j = 1;j <= COLUMN;j++)
@@ -136,7 +143,7 @@ void drawPoint()
         double x = p->column * BLOCK_SIZE, y = (p->row - distance)* BLOCK_SIZE, z = p->depth * BLOCK_SIZE;
         glPushMatrix();
             glTranslatef(x,y,z);
-            glColor4f(1.0f,0.0f,0.0f,0.3f);
+            glColor4f(0.0f,0.0f,1.0f,0.2f);
             glutSolidCube(BLOCK_SIZE);
         glPopMatrix();
     }
@@ -145,7 +152,7 @@ void drawPoint()
 void drawContainer()
 {
     glColor3f(1.0f,1.0f,1.0f);
-    glBegin(GL_LINES);
+/*    glBegin(GL_LINES);
         glVertex3f(LEFT_BORDER,TOP_BORDER,FRONT_BORDER);
         glVertex3f(LEFT_BORDER,BOTTOM_BORDER,FRONT_BORDER);
     glEnd();
@@ -160,7 +167,7 @@ void drawContainer()
     glBegin(GL_LINES);
         glVertex3f(RIGHT_BORDER,TOP_BORDER,BACK_BORDER);
         glVertex3f(RIGHT_BORDER,BOTTOM_BORDER,BACK_BORDER);
-    glEnd();
+    glEnd();*/
     glBegin(GL_LINE_LOOP);
         glVertex3f(LEFT_BORDER,BOTTOM_BORDER,FRONT_BORDER);
         glVertex3f(RIGHT_BORDER,BOTTOM_BORDER,FRONT_BORDER);
@@ -168,6 +175,21 @@ void drawContainer()
         glVertex3f(LEFT_BORDER,BOTTOM_BORDER,BACK_BORDER);
     glEnd();
 
+    glColor3f(0.4f,0.4f,0.4f);
+    for (int i = 1;i < COLUMN;i++)
+    {
+        for (int j = 1;j < DEPTH;j++)
+        {
+            glBegin(GL_LINES);
+                glVertex3f(LEFT_BORDER + i * BLOCK_SIZE,BOTTOM_BORDER,FRONT_BORDER);
+                glVertex3f(LEFT_BORDER + i * BLOCK_SIZE,BOTTOM_BORDER,BACK_BORDER);
+            glEnd();
+            glBegin(GL_LINES);
+                glVertex3f(LEFT_BORDER,BOTTOM_BORDER,FRONT_BORDER - j * BLOCK_SIZE);
+                glVertex3f(RIGHT_BORDER,BOTTOM_BORDER,FRONT_BORDER - j * BLOCK_SIZE);
+            glEnd();
+        }
+    }
 }
 
 void drawTetris()
@@ -202,9 +224,8 @@ void drawTetris()
         {
             if (block_map[START_ROW][START_COLUMN][START_DEPTH].isOccupy)
             {
-                string str = "You Lose!\nPress F1 to restart";
-                glRasterPos3i(centerx,-1.0f,centerz);
-                glColor3f(1.0f,0.0f,0.0f);
+                string str = "You Lose! Press P to restart";
+                glRasterPos3i(centerx - 0.5f,-1.0f,centerz);
                 for (int i = 0;i < str.length();i++)
                     glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
                 isLose = true;
@@ -235,13 +256,14 @@ void reshape(int w,int h)
 
 void refreshTetris(int c)
 {
-    if (isLose)
-        return;
     current = clock();
     if (current - previous >= (speed * (clock_switch % 10) + dropspeed * (clock_switch / 10) / 1000))
     {
         if (!current_block.isBottom())
+        {
+            isNext = false;
             current_block.down();
+        }
         previous = clock();
         clock_switch = 1;
         if (isNext)
@@ -260,10 +282,8 @@ void refreshTetris(int c)
 
 void keyboardSpecial(int key,int x,int y)
 {
-    if (key == GLUT_KEY_F1)
-        printf("123");
-    else if (isLose)
-      return;
+    if (isLose)
+        return;
     switch (key)
     {
         case GLUT_KEY_LEFT:
@@ -351,12 +371,15 @@ void keyboardSpecial(int key,int x,int y)
 
 void keyboardControl(unsigned char key,int x,int y)
 {
-    if (isLose)
+    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
+    if (key == 'p')
+        init();
+    else if (key == 27)
+        exit(0);
+    else if (isLose)
         return;
     switch (key)
     {
-		case 27:
-			exit(0);
         case 32:
             if (!current_block.isBottom())
                 current_block.drop();
@@ -398,7 +421,6 @@ int main(int argc,char *argv[])
     glutInitWindowSize(scr_w,scr_h);
     glutInitWindowPosition(100,100);
     glutCreateWindow("Tetris");
-    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
     init();
     glutSpecialFunc(keyboardSpecial);
     glutKeyboardFunc(keyboardControl);
