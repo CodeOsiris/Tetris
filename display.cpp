@@ -303,6 +303,10 @@ void refreshTetris(int c)
     glutTimerFunc(DELAY,refreshTetris,0);
 }
 
+void setKeyRepeat(unsigned char key, int x, int y){
+    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
+}
+
 void keyboardSpecial(int key,int x,int y)
 {
     if (isLose)
@@ -394,7 +398,6 @@ void keyboardSpecial(int key,int x,int y)
 
 void keyboardControl(unsigned char key,int x,int y)
 {
-    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
     if (key == 'p')
         init();
     else if (key == 27)
@@ -433,10 +436,12 @@ void keyboardControl(unsigned char key,int x,int y)
             clock_switch = 10;
             break;
         case 'r':
+            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             if (eyey < 2.0)
                 eyey += 0.1;
             break;
         case 'f':
+            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             if (eyey > -0.4)
                 eyey -= 0.1;
             break;
@@ -453,8 +458,10 @@ int main(int argc,char *argv[])
     glutInitWindowPosition(100,100);
     glutCreateWindow("Tetris");
     init();
+    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
     glutSpecialFunc(keyboardSpecial);
     glutKeyboardFunc(keyboardControl);
+    glutKeyboardUpFunc(setKeyRepeat);
     glutDisplayFunc(drawTetris);
     refreshTetris(0);
     glutMainLoop();
