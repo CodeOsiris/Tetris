@@ -196,22 +196,22 @@ void handle_lose(){
     string str = "You Lose! Press P to restart";
     switch (status){
         case 0:
-            glRasterPos3i( -0.2f, 0.0f,1.0f);
+            glRasterPos3f( -0.0f, 0.0f,1.0f);
             for (int i = 0;i < str.length();i++)
                 glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
             break;
         case 1:
-            glRasterPos3i( 1.0f, -1.0f,-0.95f);
+            glRasterPos3f( 1.0f, -0.5f,-0.2f);
             for (int i = 0;i < str.length();i++)
                 glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
             break;
         case 2:
-            glRasterPos3i( 1.8f, 0.5f,0.0f);
+            glRasterPos3f( 0.8f, 0.5f,-0.6f);
             for (int i = 0;i < str.length();i++)
                 glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
             break;
         case 3:
-            glRasterPos3i( 1.2f, 0.0f,1.0f);
+            glRasterPos3f( 1.0f, 0.0f,0.9f);
             for (int i = 0;i < str.length();i++)
                 glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
             break;
