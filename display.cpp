@@ -22,7 +22,7 @@ int level_fill[ROW + 2];
 //View Parameters
 clock_t previous,current;
 int clock_switch = 1;
-int speed = 100;
+int speed = 150000;
 int dropspeed = 100;
 bool isNext = false;
 bool isLose = false;
