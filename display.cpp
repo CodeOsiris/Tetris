@@ -22,7 +22,7 @@ int level_fill[ROW + 2];
 //View Parameters
 clock_t previous,current;
 int clock_switch = 1;
-int speed = 150000;
+int speed = 100;
 int dropspeed = 100;
 bool isNext = false;
 bool isLose = false;
@@ -192,6 +192,32 @@ void drawContainer()
     }
 }
 
+void handle_lose(){
+    string str = "You Lose! Press P to restart";
+    switch (status){
+        case 0:
+            glRasterPos3i( -0.2f, 0.0f,1.0f);
+            for (int i = 0;i < str.length();i++)
+                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
+            break;
+        case 1:
+            glRasterPos3i( 1.0f, -1.0f,-0.95f);
+            for (int i = 0;i < str.length();i++)
+                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
+            break;
+        case 2:
+            glRasterPos3i( 1.8f, 0.5f,0.0f);
+            for (int i = 0;i < str.length();i++)
+                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
+            break;
+        case 3:
+            glRasterPos3i( 1.2f, 0.0f,1.0f);
+            for (int i = 0;i < str.length();i++)
+                glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
+            break;
+    }
+}
+
 void drawTetris()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -224,11 +250,8 @@ void drawTetris()
         {
             if (block_map[START_ROW][START_COLUMN][START_DEPTH].isOccupy)
             {
-                string str = "You Lose! Press P to restart";
-                glRasterPos3i(centerx - 0.5f,-1.0f,centerz);
-                for (int i = 0;i < str.length();i++)
-                    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
                 isLose = true;
+                handle_lose();
             }
             else isNext = true;
         }
