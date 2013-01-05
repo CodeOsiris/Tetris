@@ -409,6 +409,14 @@ void keyboardControl(unsigned char key,int x,int y)
         case 's':
             clock_switch = 10;
             break;
+        case 'r':
+            if (eyey < 2.0)
+                eyey += 0.1;
+            break;
+        case 'f':
+            if (eyey > -0.4)
+                eyey -= 0.1;
+            break;
         default:
             break;
     }
