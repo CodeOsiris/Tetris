@@ -10,3 +10,9 @@ Headers\ÊÇ·ÅÖÃ.hÍ·ÎÄ¼þµÄ¡£Ö÷ÇÃdisplay.cppµÄÈËÓÐÒåÎñÎ¬»¤Headers\ÎÄ¼þ¼Ð£¬ÔÚÀïÃæÌí¼
 Sources\ÊÇ·ÅÖÃ.cppÔ´ÎÄ¼þµÄ¡£¿ª·¢Õß´ÓHeaders\ÀïÃæÌôÑ¡×Ô¼ºÏëÒªÊµÏÖµÄÍ·ÎÄ¼þ£¬ÔÚ´ËÎÄ¼þ¼ÐÖÐÓÃÍ¬ÃûcppÊµÏÖ¡£
 
 CodeBlocksÈç¹ûÌáÊ¾ÕÒ²»µ½.dll£¬Ö±½Ó°ÑÄÇ¸ö.dll¸ú.exe·ÅÔÚÒ»Æð¼´¿É(.dll·ÅÔÚsystem32²»¼ûÐ§µÄÇé¿öÏÂÊ¹ÓÃÕâÕÐ)¡£
+
+Q¡¢W¡¢E·Ö±ðÓÃÓÚyOz¡¢xOz¡¢xOyÆ½ÃæµÄ±ä»»¡£
+
+A¡¢D·Ö±ðÓÃÓÚÈÃÊÓ½ÇÏò×ó¡¢ÏòÓÒÐý×ª90¶È¡£
+
+R¡¢F·Ö±ðÓÃÓÚÌ§¸ß¡¢½µµÍÊÓ½Ç¡£
