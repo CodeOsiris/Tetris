@@ -11,4 +11,4 @@ Sources\是放置.cpp源文件的。开发者从Headers\里面挑选自己想要实现的头文件，在此文
 
 CodeBlocks如果提示找不到.dll，直接把那个.dll跟.exe放在一起即可(.dll放在system32不见效的情况下使用这招)。
 
-方向键移动位置，QWE旋转（目前只做了E）
+茫琎WE旋转（目前只做了E）
