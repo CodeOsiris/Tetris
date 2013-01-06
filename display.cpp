@@ -631,7 +631,7 @@ int main(int argc,char *argv[])
     glutInitWindowPosition(0,0);
     glutCreateWindow("Tetris");
     init();
-    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
+//    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
     glutSpecialFunc(keyboardSpecial);
     glutKeyboardFunc(keyboardControl);
 //    glutKeyboardUpFunc(setKeyRepeat);
