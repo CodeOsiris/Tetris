@@ -2,16 +2,19 @@
 #include "Headers\components.h"
 #define GLUT_DISABLE_ATEXIT_HACK
 #define DELAY 12
+#define RATE 1
 #endif
 
 #ifdef __linux
 #include "Headers/components.h"
 #define DELAY 1
+#define RATE 100
 #endif
 
 #ifdef MACRO
 #include "Headers/components.h"
 #define DELAY 12
+#define RATE 1
 #endif
 
 //Components
@@ -21,9 +24,12 @@ int level_fill[ROW + 2];
 
 //View Parameters
 clock_t previous,current;
+int total_erase = 0;
+int score = 0;
+int level = 1;
 int clock_switch = 1;
-int speed = 200000;
-int dropspeed = 100;
+int speed = 5000 * RATE;
+int dropspeed = 1 * RATE;
 bool isStart = true;
 bool isNext = false;
 bool isLose = false;
@@ -32,6 +38,7 @@ int scr_h = 600;
 int status = 0;
 const double pi = acos(-1);
 double anglex = 0.0;
+double angley = 0.0;
 float eyex = 2.0 * sin(anglex) + CENTER_X, eyey = 0.6, eyez = 2.0 * cos(anglex) + CENTER_Z, centerx = CENTER_X, centery = CENTER_Y, centerz = CENTER_Z, upx = 0.0, upy = 1.0, upz = 0.0;
 
 void getNextBlock()
@@ -81,6 +88,10 @@ void init()
     eyex = 2.0 * sin(anglex) + CENTER_X;
     eyey = 0.6;
     eyez = 2.0 * cos(anglex) + CENTER_Z;
+    speed = 5000 * RATE;
+    total_erase = 0;
+    score = 0;
+    level = 1;
     for (int i = 0;i <= ROW + 1;i++)
     {
         for (int j = 0;j <= COLUMN + 1;j++)
@@ -101,6 +112,21 @@ void init()
     getNextBlock();
 }
 
+string valToStr(int val)
+{
+    string str;
+    do
+    {
+        str += (val % 10) + '0';
+        val /= 10;
+    }
+    while (val);
+    string rstr;
+    for (int i = str.length() - 1;i >= 0;i--)
+        rstr += str[i];
+    return rstr;
+}
+
 void drawBlock(Block block){
     list<Point>::iterator p;
     for (p = block.points.begin();p != block.points.end();p++)
@@ -114,14 +140,15 @@ void drawBlock(Block block){
     }
     return;
 }
+
 void drawHint()
 {
-    float base_x,base_y,base_z,hint_x,hint_y,hint_z,fix_x,fix_y,fix_z;
+    float base_x,base_y,base_z,hint_x,hint_y,hint_z,fix_x,fix_y,fix_z,stat_x,stat_y,stat_z;
     glPushMatrix();
         switch (status)
         {
             case 0:
-                base_x = 0.0f;
+                base_x = 3 * BLOCK_SIZE;
                 base_y = -1.0f;
                 base_z = -7 * BLOCK_SIZE;
                 hint_x = -14 * BLOCK_SIZE;
@@ -130,20 +157,26 @@ void drawHint()
                 fix_x = -0.04f;
                 fix_y = -0.15f;
                 fix_z = 0.0f;
+                stat_x = 1.0f;
+                stat_y = 0.0f;
+                stat_z = 0.0f;
                 break;
             case 1:
                 base_x = -7 * BLOCK_SIZE;
                 base_y = -1.0f;
-                base_z = 0.0f;
+                base_z = 3 * BLOCK_SIZE;
                 hint_x = 0.0f;
                 hint_y = 0.7f;
                 hint_z = -14 * BLOCK_SIZE;
                 fix_x = 0.0f;
                 fix_y = -0.15f;
                 fix_z = -0.04f;
+                stat_x = 0.0f;
+                stat_y = 0.0f;
+                stat_z = 1.0f;
                 break;
             case 2:
-                base_x = -14 * BLOCK_SIZE;
+                base_x = -17 * BLOCK_SIZE;
                 base_y = -1.0f;
                 base_z = -7 * BLOCK_SIZE;
                 hint_x = 14 * BLOCK_SIZE;
@@ -152,37 +185,58 @@ void drawHint()
                 fix_x = 0.04f;
                 fix_y = -0.15f;
                 fix_z = 0.0f;
+                stat_x = -1.0f;
+                stat_y = 0.0f;
+                stat_z = 0.0f;
                 break;
             case 3:
                 base_x = -7 * BLOCK_SIZE;
                 base_y = -1.0f;
-                base_z = -14 * BLOCK_SIZE;
+                base_z = -17 * BLOCK_SIZE;
                 hint_x = 0.0f;
                 hint_y = 0.7f;
                 hint_z = 14 * BLOCK_SIZE;
                 fix_x = 0.0f;
                 fix_y = -0.15f;
                 fix_z = 0.04f;
+                stat_x = 0.0f;
+                stat_y = 0.0f;
+                stat_z = -1.0f;
                 break;
         }
         glTranslatef(base_x,base_y,base_z);
         drawBlock(next_block);
-        string help[12] = {
-            "Enter: Restart",
-            "Arrow Keys: Move blocks",
-            "Q: Rotate blocks on axis-x",
-            "W: Rotate blocks on axis-y",
-            "E: Rotate blocks on axis-z",
-            "S: Speed blocks",
-            "Space: Drop blocks",
-            "A: Rotate horizontally(clockwise)",
-            "D: Rotate horizontally(counterclockwise)",
-            "F: Rotate vertically(clockwise)",
-            "R: Rotate vertically(counterclockwise)",
-            "P: Pause"
-        };
     glPopMatrix();
-    for (int i = 0;i < 12;i++)
+    glColor3f(1.0f,1.0f,1.0f);
+    string total_str = "Erase: " + valToStr(total_erase);
+    string score_str = "Score: " + valToStr(score);
+    string level_str = "Level: " + valToStr(level);
+    glRasterPos3f(centerx + stat_x,centery + stat_y,centerz +stat_z);
+    for (int i = 0;i < level_str.length();i++)
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,level_str[i]);
+    glRasterPos3f(centerx + stat_x + 0.02f,centery + stat_y - 0.15f,centerz +stat_z);
+    for (int i = 0;i < score_str.length();i++)
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,score_str[i]);
+    glRasterPos3f(centerx + stat_x + 0.04f,centery + stat_y - 0.3f,centerz +stat_z);
+    for (int i = 0;i < total_str.length();i++)
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,total_str[i]);
+    string help[14] = {
+        "Enter: Restart",
+        "Arrow Keys: Move blocks",
+        "Q: Rotate blocks on axis-x",
+        "W: Rotate blocks on axis-y",
+        "E: Rotate blocks on axis-z",
+        "S: Speed blocks",
+        "Space: Drop blocks",
+        "A: Rotate horizontally(clockwise)",
+        "D: Rotate horizontally(counterclockwise)",
+        "F: Rotate vertically(clockwise)",
+        "R: Rotate vertically(counterclockwise)",
+        "P: Pause",
+        "-: Level down",
+        "+: Level up"
+    };
+    for (int i = 0;i < 14;i++)
     {
         glRasterPos3f(centerx + hint_x + fix_x * i,centery + hint_y + fix_y * i,centerz + hint_z + fix_z * i);
         for (int j = 0;j < help[i].length();j++)
@@ -190,6 +244,7 @@ void drawHint()
     }
     if (!isStart)
     {
+        glColor3f(1.0f,0.0f,0.0f);
         string pause = "Paused";
         glRasterPos3f(centerx,centery + 0.9f,centerz);
         for (int i = 0;i < pause.length();i++)
@@ -199,10 +254,10 @@ void drawHint()
 
 void drawPoint()
 {
-    float color[4][3] = {0.7f,0.0f,0.0f,
-                         1.0f,0.5f,0.0f,
-                         1.0f,1.0f,0.0f,
-                         0.0f,1.0f,0.0f};
+    float color[4][4] = {0.7f,0.0f,0.0f,0.7f,
+                         1.0f,0.5f,0.0f,0.7f,
+                         1.0f,1.0f,0.0f,0.7f,
+                         0.0f,1.0f,0.0f,0.7f};
     for (int i = 1;i <= ROW;i++)
     {
         for (int j = 1;j <= COLUMN;j++)
@@ -214,7 +269,7 @@ void drawPoint()
                 {
                     glPushMatrix();
                         glTranslatef(x,y,z);
-                        glColor3f(color[i % 4][0],color[i % 4][1],color[i % 4][2]);
+                        glColor4f(color[i % 4][0],color[i % 4][1],color[i % 4][2],color[i % 4][3]);
                         glutSolidCube(BLOCK_SIZE);
                     glPopMatrix();
                 }
@@ -284,7 +339,7 @@ void drawContainer()
 
 void handle_lose(){
     string str = "You Lose! Press Enter to restart";
-    glRasterPos3f(centerx,centery - 1.2f,centerz);
+    glRasterPos3f(centerx,centery / cos(angley) - 1.5f,centerz);
     for (int i = 0;i < str.length();i++)
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
 }
@@ -314,24 +369,38 @@ void drawTetris()
         printf("\n");
     }
 */
-    drawContainer();
-    glPushMatrix();
-        glTranslatef(-7 * BLOCK_SIZE,-7 * BLOCK_SIZE,-7 * BLOCK_SIZE);
-        if (current_block.isBottom())
-        {
-            if (block_map[START_ROW][START_COLUMN][START_DEPTH].isOccupy)
-            {
-                isLose = true;
-                handle_lose();
-            }
-            else isNext = true;
-        }
-        while (judge_row());
-        drawBlock(current_block);
-        drawPoint();
-    glPopMatrix();
 
+    glColor3f(1.0f,1.0f,1.0f);
+    if (isLose)
+        handle_lose();
     drawHint();
+
+    glPushMatrix();
+        glRotatef((GLfloat)angley,1.0f,0.0f,0.0f);
+        drawContainer();
+        glPushMatrix();
+            glTranslatef(-7 * BLOCK_SIZE,-7 * BLOCK_SIZE,-7 * BLOCK_SIZE);
+            if (current_block.isBottom())
+            {
+                if (block_map[START_ROW][START_COLUMN][START_DEPTH].isOccupy)
+                {
+                    isLose = true;
+                }
+                else isNext = true;
+            }
+            int base = 1;
+            int tmp = 1;
+            while (judge_row())
+            {
+                total_erase++;
+                score += tmp;
+                tmp *= ++base;
+            }
+            drawBlock(current_block);
+            drawPoint();
+        glPopMatrix();
+
+    glPopMatrix();
 
     glFlush();
     glutSwapBuffers();
@@ -346,6 +415,7 @@ void reshape(int w,int h)
 
 void refreshTetris(int c)
 {
+    speed = (int)((5.5 - level / 2.0) * 1000) * RATE;
     if (isStart)
     {
         current = clock();
@@ -484,6 +554,14 @@ void keyboardControl(unsigned char key,int x,int y)
         return;
     switch (key)
     {
+        case 61:
+            if (level < 10)
+                level++;
+            break;
+        case 45:
+            if (level > 1)
+                level--;
+            break;
         case 32:
             if (!current_block.isBottom())
                 current_block.drop();
@@ -528,14 +606,14 @@ void keyboardControl(unsigned char key,int x,int y)
         case 'R':
         case 'r':
             glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
-            if (eyey < 2.0)
-                eyey += 0.2;
+            if (angley < 22.5)
+                angley += 2;
             break;
         case 'F':
         case 'f':
             glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
-            if (eyey > -0.4)
-                eyey -= 0.2;
+            if (angley > -15)
+                angley -= 2;
             break;
         case 'P':
         case 'p':
@@ -551,7 +629,7 @@ int main(int argc,char *argv[])
     glutInit(&argc,argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(scr_w,scr_h);
-    glutInitWindowPosition(100,100);
+    glutInitWindowPosition(0,0);
     glutCreateWindow("Tetris");
     init();
     glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
