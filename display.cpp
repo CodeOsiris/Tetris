@@ -446,7 +446,7 @@ void setKeyRepeat(unsigned char key, int x, int y){
     glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 }
 
-void setSpecialKeyRepeat(int key, int x, int y)
+void setSpecialKeyRepeat(int key, int x, int y){
     glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 }
 
