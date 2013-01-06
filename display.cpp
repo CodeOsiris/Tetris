@@ -372,7 +372,7 @@ void refreshTetris(int c)
     glutPostRedisplay();
     glutTimerFunc(DELAY,refreshTetris,0);
 }
-
+/*
 void setKeyRepeat(unsigned char key, int x, int y){
     glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 }
@@ -380,7 +380,7 @@ void setKeyRepeat(unsigned char key, int x, int y){
 void setSpecialKeyRepeat(int key, int x, int y){
     glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 }
-
+*/
 void keyboardSpecial(int key,int x,int y)
 {
     if (isLose)
@@ -388,7 +388,7 @@ void keyboardSpecial(int key,int x,int y)
     switch (key)
     {
         case GLUT_KEY_LEFT:
-            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
+            //glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){
                 case 0:
                     if (!current_block.isLeft())
@@ -409,7 +409,7 @@ void keyboardSpecial(int key,int x,int y)
             }
             break;
         case GLUT_KEY_RIGHT:
-            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
+            //glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){
                 case 2:
                     if (!current_block.isLeft())
@@ -430,7 +430,7 @@ void keyboardSpecial(int key,int x,int y)
             }
             break;
         case GLUT_KEY_UP:
-            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
+            //glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){
                 case 3:
                     if (!current_block.isLeft())
@@ -451,7 +451,7 @@ void keyboardSpecial(int key,int x,int y)
             }
             break;
         case GLUT_KEY_DOWN:
-            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
+            //glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){
                 case 1:
                     if (!current_block.isLeft())
@@ -522,18 +522,18 @@ void keyboardControl(unsigned char key,int x,int y)
             break;
         case 'S':
         case 's':
-            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
+            //glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             clock_switch = 10;
             break;
         case 'R':
         case 'r':
-            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
+            //glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             if (eyey < 2.0)
                 eyey += 0.2;
             break;
         case 'F':
         case 'f':
-            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
+            //glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             if (eyey > -0.4)
                 eyey -= 0.2;
             break;
@@ -554,11 +554,11 @@ int main(int argc,char *argv[])
     glutInitWindowPosition(100,100);
     glutCreateWindow("Tetris");
     init();
-    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
+    //glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
     glutSpecialFunc(keyboardSpecial);
     glutKeyboardFunc(keyboardControl);
-    glutKeyboardUpFunc(setKeyRepeat);
-    glutSpecialUpFunc(setSpecialKeyRepeat);
+    //glutKeyboardUpFunc(setKeyRepeat);
+    //glutSpecialUpFunc(setSpecialKeyRepeat);
     glutDisplayFunc(drawTetris);
     refreshTetris(0);
     glutMainLoop();
