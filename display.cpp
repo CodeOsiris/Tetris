@@ -399,7 +399,6 @@ void drawTetris()
             drawBlock(current_block);
             drawPoint();
         glPopMatrix();
-
     glPopMatrix();
 
     glFlush();
@@ -447,7 +446,7 @@ void setKeyRepeat(unsigned char key, int x, int y){
     glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 }
 
-void setSpecialKeyRepeat(int key, int x, int y){
+void setSpecialKeyRepeat(int key, int x, int y)
     glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 }
 
@@ -600,7 +599,7 @@ void keyboardControl(unsigned char key,int x,int y)
             break;
         case 'S':
         case 's':
-            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
+            //glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             clock_switch = 10;
             break;
         case 'R':
