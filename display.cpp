@@ -30,6 +30,7 @@ int level = 1;
 int clock_switch = 1;
 int speed = 5000 * RATE;
 int dropspeed = 1 * RATE;
+double fix_angle = 0.70;
 bool isStart = true;
 bool isNext = false;
 bool isLose = false;
@@ -143,7 +144,7 @@ void drawBlock(Block block){
 
 void drawHint()
 {
-    float base_x,base_y,base_z,hint_x,hint_y,hint_z,fix_x,fix_y,fix_z,stat_x,stat_y,stat_z;
+    float base_x,base_y,base_z,hint_x,hint_y,hint_z,fix_x,fix_y,fix_z,stat_x,stat_y,stat_z,fixs_x,fixs_y,fixs_z;
     glPushMatrix();
         switch (status)
         {
@@ -160,6 +161,9 @@ void drawHint()
                 stat_x = 1.0f;
                 stat_y = 0.0f;
                 stat_z = 0.0f;
+                fixs_x = 0.02f;
+                fixs_y = -0.15f;
+                fixs_z = 0.0f;
                 break;
             case 1:
                 base_x = -7 * BLOCK_SIZE;
@@ -174,6 +178,9 @@ void drawHint()
                 stat_x = 0.0f;
                 stat_y = 0.0f;
                 stat_z = 1.0f;
+                fixs_x = 0.0f;
+                fixs_y = -0.15f;
+                fixs_z = 0.02f;
                 break;
             case 2:
                 base_x = -17 * BLOCK_SIZE;
@@ -188,6 +195,9 @@ void drawHint()
                 stat_x = -1.0f;
                 stat_y = 0.0f;
                 stat_z = 0.0f;
+                fixs_x = -0.02f;
+                fixs_y = -0.15f;
+                fixs_z = 0.0f;
                 break;
             case 3:
                 base_x = -7 * BLOCK_SIZE;
@@ -202,6 +212,9 @@ void drawHint()
                 stat_x = 0.0f;
                 stat_y = 0.0f;
                 stat_z = -1.0f;
+                fixs_x = 0.0f;
+                fixs_y = -0.15f;
+                fixs_z = -0.02f;
                 break;
         }
         glTranslatef(base_x,base_y,base_z);
@@ -211,13 +224,13 @@ void drawHint()
     string total_str = "Erase: " + valToStr(total_erase);
     string score_str = "Score: " + valToStr(score);
     string level_str = "Level: " + valToStr(level);
-    glRasterPos3f(centerx + stat_x,centery + stat_y,centerz +stat_z);
+    glRasterPos3f(centerx + stat_x,centery + stat_y,centerz + stat_z);
     for (int i = 0;i < level_str.length();i++)
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,level_str[i]);
-    glRasterPos3f(centerx + stat_x + 0.02f,centery + stat_y - 0.15f,centerz +stat_z);
+    glRasterPos3f(centerx + stat_x + fixs_x,centery + stat_y + fixs_y,centerz + stat_z + fixs_z);
     for (int i = 0;i < score_str.length();i++)
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,score_str[i]);
-    glRasterPos3f(centerx + stat_x + 0.04f,centery + stat_y - 0.3f,centerz +stat_z);
+    glRasterPos3f(centerx + stat_x + fixs_x * 2,centery + stat_y + fixs_y * 2,centerz + stat_z + fixs_z * 2);
     for (int i = 0;i < total_str.length();i++)
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,total_str[i]);
     string help[14] = {
@@ -354,21 +367,6 @@ void drawTetris()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     gluLookAt(eyex, eyey, eyez, centerx, centery, centerz, upx, upy, upz);
-    //printf("%d %d %d\n",ROW,COLUMN,DEPTH);
-    //printf("%d\n",level_fill[1]);
-    //printf("%d %d %d\n",(current_block.points.begin())->row,(current_block.points.begin())->column,(current_block.points.begin())->depth);
-/*
-    for (int i = ROW ;i >= 1;i--)
-    {
-        for (int j = 1;j <= COLUMN;j++)
-        {
-            for (int k = 1;k <= DEPTH;k++)
-                printf("%d ",block_map[i][j][DEPTH].isOccupy);
-            printf("\n");
-        }
-        printf("\n");
-    }
-*/
 
     glColor3f(1.0f,1.0f,1.0f);
     if (isLose)
@@ -376,7 +374,23 @@ void drawTetris()
     drawHint();
 
     glPushMatrix();
-        glRotatef((GLfloat)angley,1.0f,0.0f,0.0f);
+        switch (status)
+        {
+            case 0:
+                glTranslatef(0.0f,-sin(angley / 180 * pi) * fix_angle,0.0f);
+                glRotatef((GLfloat)angley,1.0f,0.0f,0.0f);
+                break;
+            case 1:
+                glRotatef((GLfloat)angley,0.0f,0.0f,1.0f);
+                break;
+            case 2:
+                glRotatef((GLfloat)angley,-1.0f,0.0f,0.0f);
+                break;
+            case 3:
+                glTranslatef(0.0f,-sin(angley / 180 * pi) * fix_angle,0.0f);
+                glRotatef((GLfloat)angley,0.0f,0.0f,-1.0f);
+                break;
+        }
         drawContainer();
         glPushMatrix();
             glTranslatef(-7 * BLOCK_SIZE,-7 * BLOCK_SIZE,-7 * BLOCK_SIZE);
