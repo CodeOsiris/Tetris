@@ -24,12 +24,13 @@ int level_fill[ROW + 2];
 
 //View Parameters
 clock_t previous,current;
-int total_erase = 0;
-int score = 0;
-int level = 1;
+long total_erase = 0;
+long score = 0;
+long level = 1;
 int clock_switch = 1;
 int speed = 5000 * RATE;
 int dropspeed = 1 * RATE;
+bool hasGravity = false;
 double fix_angle = 0.71;
 bool isStart = true;
 bool isNext = false;
@@ -37,10 +38,11 @@ bool isLose = false;
 int scr_w = 1000;
 int scr_h = 600;
 int status = 0;
-const double pi = acos(-1);
 double anglex = 0.0;
 double angley = 0.0;
 float eyex = 2.0 * sin(anglex) + CENTER_X, eyey = 0.6, eyez = 2.0 * cos(anglex) + CENTER_Z, centerx = CENTER_X, centery = CENTER_Y, centerz = CENTER_Z, upx = 0.0, upy = 1.0, upz = 0.0;
+const double pi = acos(-1);
+const long level_score[11] = {0,20,50,90,140,200,270,350,460,560,670};
 
 void getNextBlock()
 {
@@ -90,6 +92,7 @@ void init()
     eyey = 0.6;
     eyez = 2.0 * cos(anglex) + CENTER_Z;
     speed = 5000 * RATE;
+    hasGravity = false;
     total_erase = 0;
     score = 0;
     level = 1;
@@ -113,7 +116,7 @@ void init()
     getNextBlock();
 }
 
-string valToStr(int val)
+string valToStr(long val)
 {
     string str;
     do
@@ -233,7 +236,8 @@ void drawHint()
     glRasterPos3f(centerx + stat_x + fixs_x * 2,centery + stat_y + fixs_y * 2,centerz + stat_z + fixs_z * 2);
     for (int i = 0;i < total_str.length();i++)
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,total_str[i]);
-    string help[14] = {
+    string help[15] = {
+        "F1: Toggle gravity",
         "Enter: Restart",
         "Arrow Keys: Move blocks",
         "Q: Rotate blocks on axis-x",
@@ -249,7 +253,7 @@ void drawHint()
         "-: Level down",
         "+: Level up"
     };
-    for (int i = 0;i < 14;i++)
+    for (int i = 0;i < 15;i++)
     {
         glRasterPos3f(centerx + hint_x + fix_x * i,centery + hint_y + fix_y * i,centerz + hint_z + fix_z * i);
         for (int j = 0;j < help[i].length();j++)
@@ -259,10 +263,18 @@ void drawHint()
     {
         glColor3f(1.0f,0.0f,0.0f);
         string pause = "Paused";
-        glRasterPos3f(centerx,centery + 0.9f,centerz);
+        glRasterPos3f(centerx,centery,centerz);
         for (int i = 0;i < pause.length();i++)
             glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,pause[i]);
     }
+    glColor3f(1.0f,1.0f,1.0f);
+    string mode;
+    if (hasGravity)
+        mode = "Gravity";
+    else mode = "Classic";
+    glRasterPos3f(centerx,centery + 0.9f,centerz);
+    for (int i = 0;i < mode.length();i++)
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,mode[i]);
 }
 
 void drawPoint()
@@ -410,6 +422,8 @@ void drawTetris()
                 score += tmp;
                 tmp *= ++base;
             }
+            if (score >= level_score[level] && level < 10)
+                level++;
             drawBlock(current_block);
             drawPoint();
         glPopMatrix();
@@ -470,6 +484,9 @@ void keyboardSpecial(int key,int x,int y)
         return;
     switch (key)
     {
+        case GLUT_KEY_F1:
+            hasGravity = !hasGravity;
+            break;
         case GLUT_KEY_LEFT:
 //            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){

@@ -66,7 +66,7 @@ void Block::drop()
 void erase_row(int row)
 {
     list<Point>::iterator p;
-    for (int i = 1;i < ROW;i++)
+    for (int i = row;i < ROW;i++)
     {
         for (int j = 1;j <= COLUMN;j++)
             for (int k = 1;k <= DEPTH;k++)
@@ -80,6 +80,21 @@ void erase_row(int row)
 }
 
 bool judge_row(){
+    if (hasGravity)
+    {
+        for (int i = 2;i <= ROW;i++)
+        {
+            for (int j = 1;j <= COLUMN;j++)
+                for (int k = 1;k <= DEPTH;k++)
+                    if (!block_map[i - 1][j][k].isOccupy && block_map[i][j][k].isOccupy)
+                    {
+                        block_map[i - 1][j][k] = block_map[i][j][k];
+                        block_map[i][j][k] = Point(0,i,j,k,false);
+                        level_fill[i - 1]++;
+                        level_fill[i]--;
+                    }
+        }
+    }
     for (int i = 1; i <= ROW; i++)
         if (level_fill[i] >= COLUMN * DEPTH)
         {

@@ -47,4 +47,5 @@ const float CENTER_Z = (FRONT_BORDER + BACK_BORDER) / 2;
 extern int level_fill[ROW + 2];
 extern int speed;
 extern int dropspeed;
+extern bool hasGravity;
 #endif
