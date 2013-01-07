@@ -162,7 +162,7 @@ void drawHint()
                 base_y = -1.0f;
                 base_z = -7 * BLOCK_SIZE;
                 hint_x = -14 * BLOCK_SIZE;
-                hint_y = 0.7f;
+                hint_y = 0.9f;
                 hint_z = 0.0f;
                 fix_x = -0.04f;
                 fix_y = -0.15f;
@@ -179,7 +179,7 @@ void drawHint()
                 base_y = -1.0f;
                 base_z = 3 * BLOCK_SIZE;
                 hint_x = 0.0f;
-                hint_y = 0.7f;
+                hint_y = 0.9f;
                 hint_z = -14 * BLOCK_SIZE;
                 fix_x = 0.0f;
                 fix_y = -0.15f;
@@ -196,7 +196,7 @@ void drawHint()
                 base_y = -1.0f;
                 base_z = -7 * BLOCK_SIZE;
                 hint_x = 14 * BLOCK_SIZE;
-                hint_y = 0.7f;
+                hint_y = 0.9f;
                 hint_z = 0.0f;
                 fix_x = 0.04f;
                 fix_y = -0.15f;
@@ -213,7 +213,7 @@ void drawHint()
                 base_y = -1.0f;
                 base_z = -17 * BLOCK_SIZE;
                 hint_x = 0.0f;
-                hint_y = 0.7f;
+                hint_y = 0.9f;
                 hint_z = 14 * BLOCK_SIZE;
                 fix_x = 0.0f;
                 fix_y = -0.15f;
@@ -458,7 +458,7 @@ void refreshTetris(int c)
     if (isStart)
     {
         current = clock();
-        if (current - previous >= (speed * (clock_switch % 10) + dropspeed * (clock_switch / 10) / 1000))
+        if (current - previous >= (speed * (clock_switch & 1) + dropspeed * (clock_switch & 2) / 1000))
         {
             if (!current_block.isBottom())
             {
@@ -655,7 +655,7 @@ void keyboardControl(unsigned char key,int x,int y)
             break;
         case 'S':
         case 's':
-            clock_switch = 10;
+            clock_switch = 2;
             break;
         case 'R':
         case 'r':
