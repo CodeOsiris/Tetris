@@ -250,10 +250,6 @@ void Block::rotate_x()
         p->depth = tmpd;
         p++;
     }
-    if (this->fix_row * this->fix_depth > 0)
-        this->fix_depth = -this->fix_depth;
-    else this->fix_row = -this->fix_row;
-
 /*    while (this->isLeft())
         this->right();
     while (this->isRight())
@@ -292,9 +288,6 @@ void Block::rotate_y()
         p->depth = tmpd;
         p++;
     }
-    if (this->fix_column * this->fix_depth > 0)
-        this->fix_column = -this->fix_column;
-    else this->fix_depth = -this->fix_depth;
 /*    
     while (this->isLeft())
         this->right();
@@ -334,9 +327,6 @@ void Block::rotate_z()
         p->column = tmpc;
         p++;
     }
-    if (this->fix_row * this->fix_column > 0)
-        this->fix_column = -this->fix_column;
-    else this->fix_row = -this->fix_row;
 /*
     while (this->isLeft())
         this->right();

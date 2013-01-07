@@ -616,7 +616,19 @@ void keyboardControl(unsigned char key,int x,int y)
         case 'Q':
         case 'q':
             if (!current_block.isBottom())
-                current_block.rotate_x();
+            {
+                switch (status)
+                {
+                    case 0:
+                    case 2:
+                        current_block.rotate_x();
+                        break;
+                    case 1:
+                    case 3:
+                        current_block.rotate_z();
+                        break;
+                }
+            }
             break;
         case 'W':
         case 'w':
@@ -626,7 +638,18 @@ void keyboardControl(unsigned char key,int x,int y)
         case 'E':
         case 'e':
             if (!current_block.isBottom())
-                current_block.rotate_z();
+            {
+                switch (status)
+                {
+                    case 0:
+                    case 2:
+                        current_block.rotate_z();
+                        break;
+                    case 1:
+                    case 3:
+                        current_block.rotate_x();
+                }
+            }
             break;
         case 'S':
         case 's':
