@@ -27,11 +27,11 @@ clock_t previous,current; // 用于在经过一段时间后就让方块下落一层
 long total_erase = 0; // 记录总共消除了多少层
 long score = 0; // 记录当前的游戏分数
 long level = 1; // 设置游戏等级，等级越高方块下落速度越快
-int clock_switch = 1; //
-int speed = 5000 * RATE; // 当前方块的普通下落速度
-int dropspeed = 1 * RATE; // 按下space之后方块的下落速度
+int clock_switch = 1; // 配合下面两个速度来调整下落速度
+int speed = 5000 * RATE; // 普通下落速度
+int dropspeed = 1 * RATE; // 急速下落速度
 bool hasGravity = false; // 用于切换不同的游戏模式
-double fix_angle = 0.71;
+double fix_angle = 0.71; // 用于修复切换视角之后的屏幕抖动
 bool isStart = true; // 用于控制游戏暂停与继续
 bool isNext = false; // 用于判断下一个方块是否可以出现并下落
 bool isLose = false; // 用于判断游戏是否结束
