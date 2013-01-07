@@ -3,25 +3,29 @@
 #include "settings.h"
 using namespace std;
 
-bool judge_row();
+//游戏组件声明
 
+bool judge_row(); //用于判断是否要进行消除
+
+//方块类
 struct Point
 {
-    int row;
-    int column;
-    int depth;
+    int row; //方块所在行
+    int column; //方块所在列
+    int depth; //方块所在层
 
-    int x;
-    int y;
-    int z;
+    int x; //方块x坐标
+    int y; //方块y坐标
+    int z; //方块z坐标
 
-    int parent;
-    bool isOccupy;
-    float color[3];
+    int parent; //方块所属积木标号，未被占有的方块标号为0
+    bool isOccupy; //标记当前方块是否被占据
+    float color[3]; //方块RGB颜色
 
     Point(int p = 0,int r = 0,int c = 0,int d = 0,bool o = false) : parent(p),row(r),column(c),depth(d),x(c),y(r),z(d),isOccupy(o){}
 };
 
+//积木类
 class Block
 {
 public:
@@ -32,41 +36,36 @@ public:
         index++;
     }
 
-    list<Point> points;
-    int base_row;
-    int base_column;
-    int base_depth;
-    static int index;
-    bool isStop;
-    float color[3];
-    char type;
-    float fix_row;
-    float fix_column;
-    float fix_depth;
+    list<Point> points; //积木包含的方块列表
+    int base_row; //积木旋转基点的初始行
+    int base_column; //积木旋转基点的初始列
+    int base_depth; //积木旋转基点的初始层
+    static int index; //积木标号
+    bool isStop; //标记积木是否已停止运动
+    float color[3]; //积木整体RGB颜色
+    char type; //积木类型
 
-    void down();
-    void left();
-    void right();
-    void forth();
-    void back();
-    void drop();
-    void rotate_x();
-    void rotate_y();
-    void rotate_z();
-    void occupy();
-    void clear();
-    bool isBottom();
-    bool isTop();
-    bool isLeft();
-    bool isRight();
-    bool isFront();
-    bool isBack();
-    float center_row();
-    float center_column();
-    float center_depth();
-    int toBottom();
+    void down(); //积木下落
+    void left(); //积木左移
+    void right(); //积木右移
+    void forth(); //积木前移
+    void back(); //积木后移
+    void drop(); //积木加速下落
+    void rotate_x(); //积木以x轴为中心旋转
+    void rotate_y(); //积木以y轴为中心旋转
+    void rotate_z(); //积木以z轴为中心旋转
+    void occupy(); //令积木占有当前所在位置
+    void clear(); //令积木取消占有当前所在位置
+    bool isBottom(); //判断积木是否到达最底部
+    bool isTop(); //判断积木是否到达最顶部
+    bool isLeft(); //判断积木是否到达最左侧
+    bool isRight(); //判断积木是否到达最右侧
+    bool isFront(); //判断积木是否到达最前端
+    bool isBack(); //判断积木是否到达最后端
+    int toBottom(); //积木到最底部的距离
 };
 
+//以下分别为7种形状的衍生方块
 class S_Block: public Block
 {
 public:
