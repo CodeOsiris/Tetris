@@ -237,8 +237,6 @@ void Block::rotate_x()
 {
     Block tmp = *this;
     list<Point>::iterator p = (this->points).begin();
-//    float base_row = this->center_row();
-//    float base_depth = this->center_depth();
     float base_row = ((this->points).begin())->row;
     float base_depth = ((this->points).begin())->depth;
     int tmpr,tmpd;
@@ -250,17 +248,7 @@ void Block::rotate_x()
         p->depth = tmpd;
         p++;
     }
-/*    while (this->isLeft())
-        this->right();
-    while (this->isRight())
-        this->left();
-    while (this->isBack())
-        this->forth();
-    while (this->isFront())
-        this->back();
-    while (this->isTop())
-        this->down();
-*/
+
     p = (this->points).begin();
     while (p != (this->points).end())
         if (p->row < 1 || p->row > ROW || p->column < 1 || p->column > COLUMN || p->depth < 1 || p->depth > DEPTH || block_map[p->row][p->column][p->depth].isOccupy)
@@ -275,8 +263,6 @@ void Block::rotate_y()
 {
     Block tmp = *this;
     list<Point>::iterator p = (this->points).begin();
-//    float base_column = this->center_column();
-//    float base_depth = this->center_depth();
     float base_column = ((this->points).begin())->column;
     float base_depth = ((this->points).begin())->depth;
     int tmpc,tmpd;
@@ -288,18 +274,7 @@ void Block::rotate_y()
         p->depth = tmpd;
         p++;
     }
-/*    
-    while (this->isLeft())
-        this->right();
-    while (this->isRight())
-        this->left();
-    while (this->isBack())
-        this->forth();
-    while (this->isFront())
-        this->back();
-    while (this->isTop())
-        this->down();
-        */
+
     p = (this->points).begin();
     while (p != (this->points).end())
         if (p->row < 1 || p->row > ROW || p->column < 1 || p->column > COLUMN || p->depth < 1 || p->depth > DEPTH || block_map[p->row][p->column][p->depth].isOccupy)
@@ -314,8 +289,6 @@ void Block::rotate_z()
 {
     Block tmp = *this;
     list<Point>::iterator p = (this->points).begin();
-//    float base_row = this->center_row();
-//    float base_column = this->center_column();
     float base_row = ((this->points).begin())->row;
     float base_column = ((this->points).begin())->column;
     int tmpr,tmpc;
@@ -327,18 +300,7 @@ void Block::rotate_z()
         p->column = tmpc;
         p++;
     }
-/*
-    while (this->isLeft())
-        this->right();
-    while (this->isRight())
-        this->left();
-    while (this->isBack())
-        this->forth();
-    while (this->isFront())
-        this->back();
-    while (this->isTop())
-        this->down();
-        */
+
     p = (this->points).begin();
     while (p != (this->points).end())
         if (p->row < 1 || p->row > ROW || p->column < 1 || p->column > COLUMN || p->depth < 1 || p->depth > DEPTH || block_map[p->row][p->column][p->depth].isOccupy)

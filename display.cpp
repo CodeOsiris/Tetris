@@ -18,32 +18,34 @@
 #endif
 
 //Components
-Block current_block,next_block;
-Point block_map[ROW + 2][COLUMN + 2][DEPTH + 2];
-int level_fill[ROW + 2];
+Block current_block,next_block; // 表示当前正在下落的方块以及预告下一个方块
+Point block_map[ROW + 2][COLUMN + 2][DEPTH + 2]; // 记录整个游戏区域各点的状态以便于绘图
+int level_fill[ROW + 2]; // 记录每一层的小方块个数，以便在铺满一层时进行消除
 
 //View Parameters
-clock_t previous,current;
-long total_erase = 0;
-long score = 0;
-long level = 1;
-int clock_switch = 1;
-int speed = 5000 * RATE;
-int dropspeed = 1 * RATE;
-bool hasGravity = false;
+clock_t previous,current; // 用于在经过一段时间后就让方块下落一层
+long total_erase = 0; // 记录总共消除了多少层
+long score = 0; // 记录当前的游戏分数
+long level = 1; // 设置游戏等级，等级越高方块下落速度越快
+int clock_switch = 1; //
+int speed = 5000 * RATE; // 当前方块的普通下落速度
+int dropspeed = 1 * RATE; // 按下space之后方块的下落速度
+bool hasGravity = false; // 用于切换不同的游戏模式
 double fix_angle = 0.71;
-bool isStart = true;
-bool isNext = false;
-bool isLose = false;
-int scr_w = 1000;
-int scr_h = 600;
-int status = 0;
-double anglex = 0.0;
-double angley = 0.0;
+bool isStart = true; // 用于控制游戏暂停与继续
+bool isNext = false; // 用于判断下一个方块是否可以出现并下落
+bool isLose = false; // 用于判断游戏是否结束
+int scr_w = 1000; // 游戏窗口的宽度
+int scr_h = 600; // 游戏窗口的高度
+int status = 0; // 用于控制目前是从哪个方向观察游戏区域的，共四个方向
+double anglex = 0.0; // 用于左右旋转视角
+double angley = 0.0; // 用于上下旋转视角
+// glutLookAt函数所需的参数
 float eyex = 2.0 * sin(anglex) + CENTER_X, eyey = 0.6, eyez = 2.0 * cos(anglex) + CENTER_Z, centerx = CENTER_X, centery = CENTER_Y, centerz = CENTER_Z, upx = 0.0, upy = 1.0, upz = 0.0;
-const double pi = acos(-1);
-const long level_score[11] = {0,20,50,90,140,200,270,350,460,560,670};
+const double pi = acos(-1); // 圆周率常量，用于旋转视角
+const long level_score[11] = {0,20,50,90,140,200,270,350,460,560,670}; // 每个等级游戏下消除一层方块所获得的分数
 
+// 随机产生一个数来决定下一个方块的形状
 void getNextBlock()
 {
     int block_type = rand() % 7;
@@ -73,6 +75,7 @@ void getNextBlock()
     }
 }
 
+// 初始化游戏参数
 void init()
 {
     glShadeModel(GL_SMOOTH);
@@ -116,6 +119,7 @@ void init()
     getNextBlock();
 }
 
+// 将分数值转化为字符串以便于输出到屏幕上
 string valToStr(long val)
 {
     string str;
@@ -131,6 +135,7 @@ string valToStr(long val)
     return rstr;
 }
 
+// 在屏幕上画出一个方块
 void drawBlock(Block block){
     list<Point>::iterator p;
     for (p = block.points.begin();p != block.points.end();p++)
@@ -145,6 +150,7 @@ void drawBlock(Block block){
     return;
 }
 
+// 在屏幕左边显示提示信息
 void drawHint()
 {
     float base_x,base_y,base_z,hint_x,hint_y,hint_z,fix_x,fix_y,fix_z,stat_x,stat_y,stat_z,fixs_x,fixs_y,fixs_z;
@@ -277,6 +283,7 @@ void drawHint()
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,mode[i]);
 }
 
+// 在屏幕相应位置画出小正方体
 void drawPoint()
 {
     float color[4][4] = {0.7f,0.0f,0.0f,0.7f,
@@ -313,6 +320,7 @@ void drawPoint()
     }
 }
 
+// 画出游戏区域
 void drawContainer()
 {
     glColor3f(1.0f,1.0f,1.0f);
@@ -362,6 +370,7 @@ void drawContainer()
     }
 }
 
+// 游戏结束时的提示内容
 void handle_lose(){
     string str = "You Lose! Press Enter to restart";
     glRasterPos3f(centerx,centery / cos(angley) - 1.5f,centerz);
@@ -369,6 +378,7 @@ void handle_lose(){
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24,str[i]);
 }
 
+// 绘制游戏窗口里的内容，包括提示、游戏区域和方块等等
 void drawTetris()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -433,6 +443,7 @@ void drawTetris()
     glutSwapBuffers();
 }
 
+// 处理改变窗口大小的事件
 void reshape(int w,int h)
 {
     scr_w = w;
@@ -440,6 +451,7 @@ void reshape(int w,int h)
     glViewport(0,0,(GLsizei)w,(GLsizei)h);
 }
 
+// 控制当前方块下落
 void refreshTetris(int c)
 {
     speed = (int)((5.5 - level / 2.0) * 1000) * RATE;
@@ -469,15 +481,8 @@ void refreshTetris(int c)
     glutPostRedisplay();
     glutTimerFunc(DELAY,refreshTetris,0);
 }
-/*
-void setKeyRepeat(unsigned char key, int x, int y){
-    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
-}
 
-void setSpecialKeyRepeat(int key, int x, int y){
-    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
-}
-*/
+// 定义特殊按键对应的操作
 void keyboardSpecial(int key,int x,int y)
 {
     if (isLose)
@@ -488,7 +493,6 @@ void keyboardSpecial(int key,int x,int y)
             hasGravity = !hasGravity;
             break;
         case GLUT_KEY_LEFT:
-//            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){
                 case 0:
                     if (!current_block.isLeft())
@@ -509,7 +513,6 @@ void keyboardSpecial(int key,int x,int y)
             }
             break;
         case GLUT_KEY_RIGHT:
-//            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){
                 case 2:
                     if (!current_block.isLeft())
@@ -530,7 +533,6 @@ void keyboardSpecial(int key,int x,int y)
             }
             break;
         case GLUT_KEY_UP:
-//            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){
                 case 3:
                     if (!current_block.isLeft())
@@ -551,7 +553,6 @@ void keyboardSpecial(int key,int x,int y)
             }
             break;
         case GLUT_KEY_DOWN:
-//            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             switch (status){
                 case 1:
                     if (!current_block.isLeft())
@@ -574,6 +575,7 @@ void keyboardSpecial(int key,int x,int y)
     }
 }
 
+// 定义普通按键对应的操作
 void keyboardControl(unsigned char key,int x,int y)
 {
     if (key == 13)
@@ -653,18 +655,15 @@ void keyboardControl(unsigned char key,int x,int y)
             break;
         case 'S':
         case 's':
-            //glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             clock_switch = 10;
             break;
         case 'R':
         case 'r':
-//            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             if (angley < 22.5)
                 angley += 2;
             break;
         case 'F':
         case 'f':
-//            glutSetKeyRepeat(GLUT_KEY_REPEAT_ON);
             if (angley > -15)
                 angley -= 2;
             break;
@@ -677,6 +676,7 @@ void keyboardControl(unsigned char key,int x,int y)
     }
 }
 
+// 主函数
 int main(int argc,char *argv[])
 {
     glutInit(&argc,argv);
@@ -685,11 +685,8 @@ int main(int argc,char *argv[])
     glutInitWindowPosition(0,0);
     glutCreateWindow("Tetris");
     init();
-//    glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
     glutSpecialFunc(keyboardSpecial);
     glutKeyboardFunc(keyboardControl);
-//    glutKeyboardUpFunc(setKeyRepeat);
-//    glutSpecialUpFunc(setSpecialKeyRepeat);
     glutDisplayFunc(drawTetris);
     refreshTetris(0);
     glutMainLoop();
