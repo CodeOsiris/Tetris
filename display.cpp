@@ -1,8 +1,8 @@
 #ifdef _WIN32
 #include "Headers\components.h"
 #define GLUT_DISABLE_ATEXIT_HACK
-#define DELAY 12
-#define RATE 1
+#define DELAY 1
+#define RATE 0.3
 #endif
 
 #ifdef __linux
@@ -13,7 +13,7 @@
 
 #ifdef MACRO
 #include "Headers/components.h"
-#define DELAY 12
+#define DELAY 1
 #define RATE 1
 #endif
 
